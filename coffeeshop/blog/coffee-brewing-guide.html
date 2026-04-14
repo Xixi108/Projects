@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to Appreciate Specialty Coffee: A Beginner's Guide</title>
+  <meta name="description" content="Learn what sets third-wave coffee apart and how to taste coffee like an expert. A beginner's guide to appreciating specialty coffee." />
+  <meta name="robots" content="index, follow" />
+  <link rel="stylesheet" href="../dist/output.css">
+  <script src="../script.js"></script>
+</head>
+<body class="bg-[#0f0f0f] text-white font-sans">
+
+  <!-- NAV -->
+  <nav class="bg-[#1a1a1a] border-b border-[#333] sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="../" class="text-xl font-bold tracking-tight">☕ Brew Haven</a>
+      <div class="hidden md:flex gap-8 items-center text-sm">
+        <a href="../" class="text-gray-400 hover:text-white transition">Home</a>
+        <a href="../about.html" class="text-gray-400 hover:text-white transition">About</a>
+        <div class="relative" id="articles-menu">
+          <button onclick="toggleArticles()" class="flex items-center gap-1.5 text-white font-semibold transition">
+            Articles
+            <svg id="articles-chevron" class="w-3 h-3 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+          <div id="articles-dropdown" class="hidden absolute top-full left-0 mt-2 w-72 bg-[#1a1a1a] border border-[#333] rounded-xl shadow-2xl z-50">
+            <div class="p-2">
+              <a href="./best-coffee-shops-manila.html" class="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-[#252525] rounded-lg transition">📍 Manila's Best Coffee Shops Guide</a>
+              <a href="./pour-over-coffee-manila.html" class="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-[#252525] rounded-lg transition">🫗 Pour Over & Specialty Coffee in Manila</a>
+              <a href="./coffee-guide-for-beginners.html" class="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-[#252525] rounded-lg transition">☕ Coffee Guide for Beginners</a>
+              <a href="./coffee-brewing-guide.html" class="block px-4 py-3 text-sm text-white bg-[#252525] rounded-lg">🎓 How to Appreciate Specialty Coffee</a>
+              <a href="./the-den-escolta-review.html" class="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-[#252525] rounded-lg transition">⭐ The Den: Escolta Review</a>
+            </div>
+          </div>
+        </div>
+        <a href="../contact.html" class="bg-yellow-500 hover:bg-yellow-400 text-black font-semibold px-4 py-2 rounded-full transition">Contact</a>
+      </div>
+      <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden text-gray-300 hover:text-white">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-[#1a1a1a] border-t border-[#333] px-6 py-4 space-y-1 text-sm">
+      <a href="../" class="block text-gray-300 hover:text-white transition py-2">Home</a>
+      <a href="../about.html" class="block text-gray-300 hover:text-white transition py-2">About</a>
+      <div class="text-gray-500 text-xs uppercase tracking-widest pt-3 pb-1">Articles</div>
+      <a href="./best-coffee-shops-manila.html" class="block text-gray-400 hover:text-white transition py-2 pl-3">Manila's Best Coffee Shops Guide</a>
+      <a href="./coffee-guide-for-beginners.html" class="block text-gray-400 hover:text-white transition py-2 pl-3">Coffee Guide for Beginners</a>
+      <a href="./coffee-brewing-guide.html" class="block text-white font-semibold py-2 pl-3">How to Appreciate Specialty Coffee</a>
+      <a href="./the-den-escolta-review.html" class="block text-gray-400 hover:text-white transition py-2 pl-3">The Den: Escolta Review</a>
+      <a href="../contact.html" class="block text-yellow-500 font-semibold hover:text-yellow-400 transition py-2">Contact</a>
+    </div>
+  </nav>
+  <script>
+    function toggleArticles() {
+      var dd = document.getElementById('articles-dropdown');
+      var ch = document.getElementById('articles-chevron');
+      var open = !dd.classList.contains('hidden');
+      dd.classList.toggle('hidden');
+      ch.style.transform = open ? '' : 'rotate(180deg)';
+    }
+    document.addEventListener('click', function(e) {
+      var menu = document.getElementById('articles-menu');
+      if (menu && !menu.contains(e.target)) {
+        document.getElementById('articles-dropdown').classList.add('hidden');
+        document.getElementById('articles-chevron').style.transform = '';
+      }
+    });
+  </script>
+
+  <!-- ARTICLE -->
+  <article class="max-w-3xl mx-auto px-6 py-20">
+
+    <!-- HEADER -->
+    <header class="mb-12">
+      <div class="mb-4">
+        <span class="text-yellow-500 text-sm font-semibold">TIPS</span>
+        <span class="text-gray-500 text-sm ml-4">March 10, 2026</span>
+      </div>
+      <h1 class="text-5xl font-bold mb-6">How to Appreciate Specialty Coffee: A Beginner's Guide</h1>
+      <p class="text-xl text-gray-400">New to specialty coffee? Learn what sets third-wave coffee apart, how to taste like an expert, and why Manila's café community is revolutionary.</p>
+    </header>
+
+    <!-- FEATURED IMAGE -->
+    <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814" alt="Coffee tasting" class="w-full rounded-2xl mb-12 h-96 object-cover" />
+
+    <!-- CONTENT -->
+    <div class="prose prose-invert max-w-none">
+      <h2 class="text-3xl font-bold mt-12 mb-6">What is Specialty Coffee?</h2>
+      <p class="text-gray-300 mb-4">
+        Specialty coffee represents the highest grade of coffee available. It's coffee that has been carefully sourced, roasted with precision, and prepared with expertise. Unlike commodity coffee (the standard stuff you find at convenience stores), specialty coffee celebrates the unique characteristics of specific coffee origins.
+      </p>
+      <p class="text-gray-300 mb-8">
+        Think of it like the difference between grocery store orange juice and fresh-pressed juice from locally grown oranges. Specialty coffee is an experience, not just a caffeine delivery system.
+      </p>
+
+      <h2 class="text-3xl font-bold mt-12 mb-6">The Key Fundamentals</h2>
+      <h3 class="text-2xl font-semibold mt-8 mb-4">1. Origin Matters</h3>
+      <p class="text-gray-300 mb-6">
+        Coffee from different regions tastes different. Ethiopian coffee might have fruity, floral notes, while Brazilian coffee tends to be fuller-bodied with chocolate undertones. Ask your barista about where the beans come from—this is always the starting point for a good conversation.
+      </p>
+
+      <h3 class="text-2xl font-semibold mt-8 mb-4">2. Freshness is Critical</h3>
+      <p class="text-gray-300 mb-6">
+        Coffee is freshest 7-14 days after roasting. A good specialty café will display roast dates prominently. Avoid very old coffee, but also avoid beans roasted the day before (they can taste grassy and underdeveloped).
+      </p>
+
+      <h3 class="text-2xl font-semibold mt-8 mb-4">3. Brewing Method Affects Taste</h3>
+      <p class="text-gray-300 mb-6">
+        Different brewing methods (espresso, pour-over, AeroPress, French press) emphasize different flavor aspects. Espresso creates body and intensity. Pour-over highlights clarity and subtle notes. Experiment with different methods to find your preference.
+      </p>
+
+      <h2 class="text-3xl font-bold mt-12 mb-6">How to Taste Coffee Like an Expert</h2>
+      <p class="text-gray-300 mb-4">
+        Coffee tasting follows a simple pattern:
+      </p>
+      <ol class="text-gray-300 mb-8 space-y-2">
+        <li class="ml-4"><strong>Aroma:</strong> Smell the coffee. What aromas do you detect? Fruity? Floral? Earthy?</li>
+        <li class="ml-4"><strong>Taste:</strong> Take a sip and let it coat your mouth. What's the first taste you notice?</li>
+        <li class="ml-4"><strong>Body:</strong> Is it light and tea-like, or heavy and syrupy?</li>
+        <li class="ml-4"><strong>Acidity:</strong> Does it have brightness, or is it smooth and mellow?</li>
+        <li class="ml-4"><strong>Finish:</strong> What lingers after you swallow?</li>
+      </ol>
+
+      <h2 class="text-3xl font-bold mt-12 mb-6">Why Manila's Coffee Scene is Special</h2>
+      <p class="text-gray-300 mb-8">
+        Manila's coffee community is unique because it's approachable yet serious. Local roasteries are investing in quality, baristas are earning international recognition, and the community welcomes both newcomers and enthusiasts. Whether you're just curious or passionate about coffee, Manila's cafés will welcome you, educate you, and inspire your palate.
+      </p>
+
+      <h2 class="text-3xl font-bold mt-12 mb-6">Your Next Steps</h2>
+      <p class="text-gray-300 mb-8">
+        Start by visiting one of Manila's specialty cafés. Order a single-origin pour-over and ask your barista to walk you through the coffee's origin story. Don't be intimidated—coffee enthusiasts love sharing their passion. Each cup is an opportunity to discover something new about yourself and the world of specialty coffee.
+      </p>
+
+    </div>
+
+    <!-- BACK TO BLOG -->
+    <div class="mt-16 pt-8 border-t border-[#333]">
+      <a href="../" class="text-yellow-500 font-semibold hover:text-yellow-400 transition">
+        ← Back to Home
+      </a>
+    </div>
+
+  </article>
+
+  <!-- FOOTER -->
+  <footer class="py-10 text-center text-gray-500 text-sm bg-[#111] mt-20">
+    © 2026 Best Coffee Shop Manila. All rights reserved.
+  </footer>
+
+</body>
+</html>

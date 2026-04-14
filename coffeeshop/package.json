@@ -1,0 +1,13 @@
+{
+  "name": "coffeeshop-landing",
+  "version": "1.0.0",
+  "description": "Landing page for coffee shop",
+  "scripts": {
+    "build-css": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32"
+  }
+}

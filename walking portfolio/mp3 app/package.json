@@ -1,0 +1,27 @@
+{
+  "name": "mp3-player-desktop",
+  "version": "1.0.0",
+  "description": "Anime MP3 player desktop app",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^37.2.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.nikki.mp3player",
+    "productName": "MP3 Player",
+    "files": [
+      "**/*",
+      "!node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!node_modules/*.d.ts"
+    ],
+    "win": {
+      "target": "nsis"
+    }
+  }
+}

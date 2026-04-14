@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nikki Lou — Photo Retoucher</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --lavender: #f0e6f7;
+            --lavender-mid: #e8d8f4;
+            --lavender-dark: #dfc8ee;
+            --brown: #5c3a1e;
+            --brown-mid: #7a4e2d;
+            --brown-light: #9b6b3f;
+            --gold: #c9a96e;
+            --text: #3a2a1a;
+            --text-light: #6b5242;
+            --white: #ffffff;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--lavender);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* ── Rainbow bar ── */
+        .rainbow-bar {
+            height: 7px;
+            background: linear-gradient(to right,
+                #ff9aa2, #ffb7b2, #ffdac1, #e2f0cb,
+                #b5ead7, #c7ceea, #dcd3f5, #f2b5d4, #ff9aa2);
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            background: rgba(240, 230, 247, 0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--lavender-dark);
+            padding: 18px 56px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: var(--brown);
+            text-decoration: none;
+            letter-spacing: 0.04em;
+        }
+        .nav-links { display: flex; gap: 36px; list-style: none; }
+        .nav-links a {
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.25s;
+        }
+        .nav-links a:hover { color: var(--brown); }
+        .nav-hamburger { display: none; background: none; border: none; cursor: pointer; }
+        .nav-hamburger span {
+            display: block; width: 24px; height: 2px;
+            background: var(--brown); margin: 5px 0;
+            transition: all 0.3s;
+        }
+
+        /* ── Hero ── */
+        #home {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 80px 48px 60px;
+            position: relative;
+        }
+        .hero-eyebrow {
+            font-size: 0.78rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3.5rem, 10vw, 8rem);
+            font-weight: 700;
+            color: var(--brown);
+            letter-spacing: 0.12em;
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+        .hero-subtitle {
+            font-size: clamp(0.95rem, 2vw, 1.15rem);
+            color: var(--text-light);
+            font-weight: 300;
+            letter-spacing: 0.08em;
+            margin-bottom: 48px;
+            max-width: 500px;
+        }
+        .hero-cta {
+            display: inline-block;
+            background: var(--brown);
+            color: #fff;
+            padding: 15px 42px;
+            border-radius: 3px;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 4px 20px rgba(92,58,30,0.25);
+        }
+        .hero-cta:hover {
+            background: var(--brown-mid);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(92,58,30,0.35);
+        }
+        .hero-scroll {
+            position: absolute;
+            bottom: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            font-size: 0.72rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(6px); }
+        }
+
+        /* ── Section shared ── */
+        .section-pad { padding: 90px 56px; }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            color: var(--brown);
+            text-align: center;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 64px;
+        }
+
+        /* ── About ── */
+        #about { background: var(--lavender-mid); }
+        .about-inner { max-width: 1100px; margin: 0 auto; }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 64px;
+            align-items: center;
+        }
+        .about-photo-wrap { position: relative; }
+        .about-photo {
+            width: 100%;
+            border-radius: 4px;
+            display: block;
+            box-shadow: 0 24px 64px rgba(92,58,30,0.22);
+        }
+        .about-photo-accent {
+            position: absolute;
+            bottom: -14px;
+            left: -14px;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--gold);
+            border-radius: 4px;
+            z-index: -1;
+        }
+        .about-text p {
+            color: var(--text-light);
+            line-height: 1.85;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+        .services-heading {
+            font-family: 'Playfair Display', serif;
+            color: var(--brown);
+            font-size: 1.1rem;
+            margin-bottom: 14px;
+            margin-top: 8px;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 20px;
+            margin-bottom: 24px;
+        }
+        .services-grid li {
+            list-style: none;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .services-grid li::before {
+            content: '✦';
+            color: var(--gold);
+            font-size: 0.65rem;
+            flex-shrink: 0;
+        }
+        .about-cta {
+            display: inline-block;
+            margin-top: 8px;
+            background: var(--brown);
+            color: #fff;
+            padding: 13px 32px;
+            border-radius: 3px;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .about-cta:hover { background: var(--brown-mid); transform: translateY(-2px); }
+
+        /* ── Portfolio ── */
+        #portfolio { max-width: 1400px; margin: 0 auto; }
+        .portfolio-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 52px;
+        }
+        .filter-btn {
+            padding: 10px 26px;
+            border: 1.5px solid var(--brown);
+            background: transparent;
+            color: var(--brown);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.25s;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--brown);
+            color: #fff;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 3px;
+            background: #fff;
+            box-shadow: 0 4px 18px rgba(92,58,30,0.1);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 44px rgba(92,58,30,0.2);
+        }
+        .portfolio-item img {
+            width: 100%;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s;
+        }
+        .portfolio-item:hover img { transform: scale(1.04); }
+        .portfolio-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(60, 32, 8, 0.72);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+        .overlay-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-style: italic;
+            color: #fff;
+            letter-spacing: 0.05em;
+        }
+        .overlay-cat {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+        .overlay-icon {
+            width: 42px;
+            height: 42px;
+            border: 1.5px solid rgba(255,255,255,0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+        }
+        .ba-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--brown);
+            color: #fff;
+            font-size: 0.62rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 2px;
+            z-index: 2;
+            font-weight: 600;
+        }
+
+        /* ── Modal ── */
+        .modal-bg {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(20,8,0,0.92);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-bg.open { display: flex; }
+        .modal-box {
+            position: relative;
+            max-width: min(860px, 94vw);
+            width: 100%;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: -48px;
+            right: 0;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2.2rem;
+            line-height: 1;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .modal-close-btn:hover { opacity: 1; }
+        .single-img {
+            width: 100%;
+            max-height: 88vh;
+            object-fit: contain;
+            border-radius: 3px;
+            display: block;
+        }
+
+        /* ── Before/After Slider ── */
+        .ba-wrap {
+            position: relative;
+            user-select: none;
+            border-radius: 3px;
+            overflow: hidden;
+            line-height: 0;
+        }
+        .ba-before { width: 100%; display: block; }
+        .ba-after-layer {
+            position: absolute;
+            top: 0; left: 0;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .ba-after-layer img {
+            position: absolute;
+            top: 0; left: 0;
+            height: 100%;
+            width: auto;
+            max-width: none;
+        }
+        .ba-line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 100%;
+            background: #fff;
+            cursor: ew-resize;
+            z-index: 10;
+        }
+        .ba-knob {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 2px 14px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: ew-resize;
+        }
+        .ba-tag {
+            position: absolute;
+            bottom: 14px;
+            background: rgba(0,0,0,0.52);
+            color: #fff;
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 2px;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.4;
+        }
+        .ba-tag-before { left: 14px; }
+        .ba-tag-after { right: 14px; }
+
+        /* ── Contact ── */
+        #contact { background: var(--lavender-mid); }
+        .contact-inner {
+            max-width: 640px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .contact-inner p {
+            color: var(--text-light);
+            line-height: 1.85;
+            font-size: 1.05rem;
+            margin-bottom: 44px;
+        }
+        .contact-email-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--brown);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: color 0.25s;
+        }
+        .contact-email-link:hover { color: var(--brown-light); }
+        .contact-btn {
+            display: inline-block;
+            margin-top: 40px;
+            background: var(--brown);
+            color: #fff;
+            padding: 16px 52px;
+            border-radius: 3px;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 4px 20px rgba(92,58,30,0.25);
+        }
+        .contact-btn:hover {
+            background: var(--brown-mid);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(92,58,30,0.35);
+        }
+
+        /* ── Footer ── */
+        footer {
+            background: var(--brown);
+            color: rgba(255,255,255,0.65);
+            text-align: center;
+            padding: 36px;
+            font-size: 0.83rem;
+            letter-spacing: 0.04em;
+        }
+        footer span { color: var(--gold); }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            nav { padding: 16px 28px; }
+            .about-grid { grid-template-columns: 1fr; gap: 40px; }
+            .about-photo-wrap { max-width: 420px; margin: 0 auto; }
+            .section-pad { padding: 70px 28px; }
+        }
+        @media (max-width: 640px) {
+            .nav-links { display: none; flex-direction: column; gap: 20px; }
+            .nav-links.open { display: flex; }
+            .nav-hamburger { display: block; }
+            .portfolio-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+            .services-grid { grid-template-columns: 1fr; }
+            .section-pad { padding: 56px 20px; }
+            #portfolio.section-pad { padding: 56px 16px; }
+        }
+        @media (max-width: 400px) {
+            .portfolio-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+  <!-- ── Back to Portfolio ── -->
+  <a href="../y2k-portfolio/index.html#projects" style="position:fixed;top:1rem;left:1rem;z-index:9999;background:rgba(0,0,0,0.7);color:#fff;text-decoration:none;padding:0.45rem 1rem;border-radius:999px;font-size:0.8rem;font-family:sans-serif;border:1px solid rgba(255,255,255,0.3);backdrop-filter:blur(8px);transition:background 0.2s;" onmouseover="this.style.background='rgba(255,20,147,0.8)'" onmouseout="this.style.background='rgba(0,0,0,0.7)'">← Portfolio</a>
+
+<div class="rainbow-bar"></div>
+
+<!-- NAV -->
+<nav>
+    <a href="#home" class="nav-logo">Nikki Lou</a>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+    <p class="hero-eyebrow">Professional Photo Editing</p>
+    <h1 class="hero-title">WELCOME</h1>
+    <p class="hero-subtitle">Photo Retouching &amp; Editing by Nikki Lou</p>
+    <a href="#portfolio" class="hero-cta">View My Portfolio</a>
+    <div class="hero-scroll">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"/>
+        </svg>
+        Scroll
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section-pad">
+    <div class="about-inner">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-grid">
+            <div class="about-photo-wrap">
+                <img src="Nikki.webp" alt="Nikki Lou" class="about-photo">
+                <div class="about-photo-accent"></div>
+            </div>
+            <div class="about-text">
+                <p>Hi, I'm Nikki — a passionate photo retoucher with an eye for detail and a love for visual storytelling. I specialize in enhancing portraits, product photos, and lifestyle images: removing blemishes, adjusting lighting and color, and bringing out the best in every shot without losing authenticity.</p>
+                <p>Whether you need subtle edits or full transformations, I'm here to help your photos shine.</p>
+                <p class="services-heading">✦ Services I offer</p>
+                <ul class="services-grid">
+                    <li>Skin smoothing &amp; blemish removal</li>
+                    <li>Color correction &amp; lighting</li>
+                    <li>Background cleanup or replacement</li>
+                    <li>Object removal</li>
+                    <li>Fashion &amp; editorial retouching</li>
+                    <li>Photo restoration</li>
+                    <li>Real estate photo editing</li>
+                    <li>Product &amp; lifestyle editing</li>
+                </ul>
+                <p>Let's make your images look their absolute best. Feel free to reach out — I'd love to work with you!</p>
+                <a href="mailto:nbaguhin@gmail.com" class="about-cta" style="margin-top:28px;">Get In Touch</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio" class="section-pad">
+    <h2 class="section-title">My Portfolio</h2>
+
+    <div class="portfolio-filters">
+        <button class="filter-btn active" data-filter="all">All Work</button>
+        <button class="filter-btn" data-filter="retouch">Retouch</button>
+        <button class="filter-btn" data-filter="manipulation">Manipulation</button>
+        <button class="filter-btn" data-filter="restoration">Restoration</button>
+        <button class="filter-btn" data-filter="product">Product &amp; Lifestyle</button>
+        <button class="filter-btn" data-filter="realestate">Real Estate</button>
+    </div>
+
+    <div class="portfolio-grid" id="grid">
+
+        <!-- RETOUCH - Before/After -->
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="ba" data-before="portfolio/retouch/1.jpg" data-after="portfolio/retouch/1.webp">
+            <div class="ba-badge">Before / After</div>
+            <img src="portfolio/retouch/1.webp" alt="View Before &amp; After" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">View Before &amp; After</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="ba" data-before="portfolio/retouch/2.jpg" data-after="portfolio/retouch/2.webp">
+            <div class="ba-badge">Before / After</div>
+            <img src="portfolio/retouch/2.webp" alt="View Before &amp; After" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">View Before &amp; After</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="ba" data-before="portfolio/retouch/3.jpg" data-after="portfolio/retouch/3.webp">
+            <div class="ba-badge">Before / After</div>
+            <img src="portfolio/retouch/3.webp" alt="View Before &amp; After" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">View Before &amp; After</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="ba" data-before="portfolio/retouch/4.jpg" data-after="portfolio/retouch/4.webp">
+            <div class="ba-badge">Before / After</div>
+            <img src="portfolio/retouch/4.webp" alt="View Before &amp; After" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">View Before &amp; After</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <!-- RETOUCH - Singles -->
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="single">
+            <img src="portfolio/retouch/5.webp" alt="Portrait Retouch" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Portrait Retouch</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="single">
+            <img src="portfolio/retouch/7.webp" alt="Portrait Retouch" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Portrait Retouch</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="single">
+            <img src="portfolio/retouch/9.webp" alt="Portrait Retouch" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Portrait Retouch</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="single">
+            <img src="portfolio/retouch/21.webp" alt="Portrait Retouch" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Portrait Retouch</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="single">
+            <img src="portfolio/retouch/22.webp" alt="Portrait Retouch" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Portrait Retouch</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="single">
+            <img src="portfolio/retouch/23.webp" alt="Portrait Retouch" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Portrait Retouch</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="single">
+            <img src="portfolio/retouch/sampl1.webp" alt="Portrait Retouch" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Portrait Retouch</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="single">
+            <img src="portfolio/retouch/Rivard.webp" alt="Portrait Retouch" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Portrait Retouch</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="single">
+            <img src="portfolio/retouch/2025-BIDDY-JACKSON0989.webp" alt="Fashion / Editorial" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Fashion / Editorial</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="single">
+            <img src="portfolio/retouch/16486460%20-%20Rabe9231.webp" alt="Portrait Retouch" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Portrait Retouch</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="single">
+            <img src="portfolio/retouch/16598111%20-%209M1A6463.webp" alt="Portrait Retouch" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Portrait Retouch</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="single">
+            <img src="portfolio/retouch/17367005%20-%20Kendn_19.webp" alt="Portrait Retouch" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Portrait Retouch</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="single">
+            <img src="portfolio/retouch/17650494%20-%20MH0164.webp" alt="Portrait Retouch" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Portrait Retouch</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="single">
+            <img src="portfolio/retouch/17735897%20-%20006_h_TY.webp" alt="Portrait Retouch" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Portrait Retouch</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="single">
+            <img src="portfolio/retouch/18061111%20-%20075A0384.webp" alt="Portrait Retouch" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Portrait Retouch</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="retouch"
+             data-type="single">
+            <img src="portfolio/retouch/18061277%20-%20CM-001-2.webp" alt="Portrait Retouch" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Portrait Retouch</span>
+                <span class="overlay-cat">Retouch</span>
+            </div>
+        </div>
+
+        <!-- MANIPULATION -->
+
+        <div class="portfolio-item" data-cat="manipulation"
+             data-type="single">
+            <img src="portfolio/manipulation/12.webp" alt="Photo Manipulation" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Photo Manipulation</span>
+                <span class="overlay-cat">Manipulation</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="manipulation"
+             data-type="single">
+            <img src="portfolio/manipulation/13.webp" alt="Photo Manipulation" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Photo Manipulation</span>
+                <span class="overlay-cat">Manipulation</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="manipulation"
+             data-type="single">
+            <img src="portfolio/manipulation/14.webp" alt="Photo Manipulation" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Photo Manipulation</span>
+                <span class="overlay-cat">Manipulation</span>
+            </div>
+        </div>
+
+        <!-- RESTORATION - Before/After -->
+
+        <div class="portfolio-item" data-cat="restoration"
+             data-type="ba" data-before="portfolio/restoration/15.webp" data-after="portfolio/photo%20restoration/15.webp">
+            <div class="ba-badge">Before / After</div>
+            <img src="portfolio/photo%20restoration/15.webp" alt="View Before &amp; After" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">View Before &amp; After</span>
+                <span class="overlay-cat">Restoration</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="restoration"
+             data-type="ba" data-before="portfolio/restoration/16.webp" data-after="portfolio/photo%20restoration/16.webp">
+            <div class="ba-badge">Before / After</div>
+            <img src="portfolio/photo%20restoration/16.webp" alt="View Before &amp; After" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">View Before &amp; After</span>
+                <span class="overlay-cat">Restoration</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="restoration"
+             data-type="ba" data-before="portfolio/restoration/17.webp" data-after="portfolio/photo%20restoration/17.webp">
+            <div class="ba-badge">Before / After</div>
+            <img src="portfolio/photo%20restoration/17.webp" alt="View Before &amp; After" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">View Before &amp; After</span>
+                <span class="overlay-cat">Restoration</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="restoration"
+             data-type="ba" data-before="portfolio/restoration/18.webp" data-after="portfolio/photo%20restoration/18.webp">
+            <div class="ba-badge">Before / After</div>
+            <img src="portfolio/photo%20restoration/18.webp" alt="View Before &amp; After" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">View Before &amp; After</span>
+                <span class="overlay-cat">Restoration</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="restoration"
+             data-type="ba" data-before="portfolio/restoration/19.webp" data-after="portfolio/photo%20restoration/19.webp">
+            <div class="ba-badge">Before / After</div>
+            <img src="portfolio/photo%20restoration/19.webp" alt="View Before &amp; After" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">View Before &amp; After</span>
+                <span class="overlay-cat">Restoration</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="restoration"
+             data-type="ba" data-before="portfolio/restoration/20.webp" data-after="portfolio/photo%20restoration/20.webp">
+            <div class="ba-badge">Before / After</div>
+            <img src="portfolio/photo%20restoration/20.webp" alt="View Before &amp; After" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">View Before &amp; After</span>
+                <span class="overlay-cat">Restoration</span>
+            </div>
+        </div>
+
+        <!-- PRODUCT & LIFESTYLE -->
+
+        <div class="portfolio-item" data-cat="product"
+             data-type="single">
+            <img src="portfolio/product%20editing-lifestyle/5.webp" alt="Product Editing" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Product Editing</span>
+                <span class="overlay-cat">Lifestyle</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="product"
+             data-type="single">
+            <img src="portfolio/product%20editing-lifestyle/6.webp" alt="Product Editing" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Product Editing</span>
+                <span class="overlay-cat">Lifestyle</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="product"
+             data-type="single">
+            <img src="portfolio/product%20editing-lifestyle/7.webp" alt="Product Editing" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Product Editing</span>
+                <span class="overlay-cat">Lifestyle</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="product"
+             data-type="single">
+            <img src="portfolio/product%20editing-lifestyle/8.webp" alt="Product Editing" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Product Editing</span>
+                <span class="overlay-cat">Lifestyle</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="product"
+             data-type="single">
+            <img src="portfolio/product%20editing-lifestyle/9.webp" alt="Product Editing" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Product Editing</span>
+                <span class="overlay-cat">Lifestyle</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="product"
+             data-type="single">
+            <img src="portfolio/product%20editing-lifestyle/10.webp" alt="Product Editing" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Product Editing</span>
+                <span class="overlay-cat">Lifestyle</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="product"
+             data-type="single">
+            <img src="portfolio/product%20editing-lifestyle/11.webp" alt="Product Editing" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Product Editing</span>
+                <span class="overlay-cat">Lifestyle</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="product"
+             data-type="single">
+            <img src="portfolio/product%20editing-lifestyle/12%20%282%29.webp" alt="Product Editing" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Product Editing</span>
+                <span class="overlay-cat">Lifestyle</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="product"
+             data-type="single">
+            <img src="portfolio/product%20editing-lifestyle/13.webp" alt="Product Editing" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Product Editing</span>
+                <span class="overlay-cat">Product & Lifestyle</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="product"
+             data-type="single">
+            <img src="portfolio/product%20editing-lifestyle/14.webp" alt="Product Editing" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Product Editing</span>
+                <span class="overlay-cat">Product & Lifestyle</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="product"
+             data-type="single">
+            <img src="portfolio/product%20editing-lifestyle/15.webp" alt="Lifestyle Photo" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Lifestyle Photo</span>
+                <span class="overlay-cat">Product & Lifestyle</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="product"
+             data-type="single">
+            <img src="portfolio/product%20editing-lifestyle/16.webp" alt="Lifestyle Photo" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Lifestyle Photo</span>
+                <span class="overlay-cat">Product & Lifestyle</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="product"
+             data-type="single">
+            <img src="portfolio/product%20editing-lifestyle/17.webp" alt="Lifestyle Photo" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Lifestyle Photo</span>
+                <span class="overlay-cat">Product & Lifestyle</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="product"
+             data-type="single">
+            <img src="portfolio/product%20editing-lifestyle/18.webp" alt="Lifestyle Photo" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Lifestyle Photo</span>
+                <span class="overlay-cat">Product & Lifestyle</span>
+            </div>
+        </div>
+
+        <!-- REAL ESTATE -->
+
+        <div class="portfolio-item" data-cat="realestate"
+             data-type="single">
+            <img src="portfolio/real%20estate/Image%201.webp" alt="Real Estate" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Real Estate</span>
+                <span class="overlay-cat">Property Photography</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="realestate"
+             data-type="single">
+            <img src="portfolio/real%20estate/Image%202.webp" alt="Real Estate" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Real Estate</span>
+                <span class="overlay-cat">Property Photography</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="realestate"
+             data-type="single">
+            <img src="portfolio/real%20estate/13_Hampton_Cir_004.webp" alt="Real Estate" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Real Estate</span>
+                <span class="overlay-cat">Property Photography</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="realestate"
+             data-type="single">
+            <img src="portfolio/real%20estate/6_Jason_Ln_001.webp" alt="Real Estate" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Real Estate</span>
+                <span class="overlay-cat">Property Photography</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="realestate"
+             data-type="single">
+            <img src="portfolio/real%20estate/6_Jason_Ln_037.webp" alt="Real Estate" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Real Estate</span>
+                <span class="overlay-cat">Property Photography</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="realestate"
+             data-type="single">
+            <img src="portfolio/real%20estate/6_Jason_Ln_115.webp" alt="Real Estate" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Real Estate</span>
+                <span class="overlay-cat">Property Photography</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="realestate"
+             data-type="single">
+            <img src="portfolio/real%20estate/6_Jason_Ln_166.webp" alt="Real Estate" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Real Estate</span>
+                <span class="overlay-cat">Property Photography</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="realestate"
+             data-type="single">
+            <img src="portfolio/real%20estate/6_Jason_Ln_256.webp" alt="Real Estate" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Real Estate</span>
+                <span class="overlay-cat">Property Photography</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="realestate"
+             data-type="single">
+            <img src="portfolio/real%20estate/6_Jason_Ln_235.webp" alt="Real Estate" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Real Estate</span>
+                <span class="overlay-cat">Property Photography</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="realestate"
+             data-type="single">
+            <img src="portfolio/real%20estate/16614337%20-%20Cali%20004.webp" alt="Real Estate" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Real Estate</span>
+                <span class="overlay-cat">Property Photography</span>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-cat="realestate"
+             data-type="single">
+            <img src="portfolio/real%20estate/16614426%20-%20Cali%20010.webp" alt="Real Estate" loading="lazy">
+            <div class="portfolio-overlay">
+                <div class="overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <span class="overlay-title">Real Estate</span>
+                <span class="overlay-cat">Property Photography</span>
+            </div>
+        </div>
+
+    </div><!-- /grid -->
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section-pad">
+    <div class="contact-inner">
+        <h2 class="section-title">Let's Work Together</h2>
+        <p>Have a project in mind? I'd love to hear about it. Whether it's portraits, product shots, real estate, or creative edits — let's make your images look their absolute best.</p>
+        <a href="mailto:nbaguhin@gmail.com" class="contact-email-link">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,12 2,6"/>
+            </svg>
+            nbaguhin@gmail.com
+        </a>
+        <br>
+        <a href="mailto:nbaguhin@gmail.com" class="contact-btn">Send Me a Message</a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2025 <span>Nikki Lou</span>. All rights reserved.</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg">
+    <div class="modal-box" id="modalBox">
+        <button class="modal-close-btn" id="modalCloseBtn">×</button>
+    </div>
+</div>
+
+<script>
+// ── Mobile nav ──
+document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+});
+
+// ── Portfolio filter ──
+const filterBtns = document.querySelectorAll('.filter-btn');
+const items = document.querySelectorAll('.portfolio-item');
+
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.filter;
+        items.forEach(item => {
+            item.style.display = (f === 'all' || item.dataset.cat === f) ? '' : 'none';
+        });
+    });
+});
+
+// ── Modal ──
+const modalBg  = document.getElementById('modalBg');
+const modalBox = document.getElementById('modalBox');
+
+function closeModal() {
+    modalBg.classList.remove('open');
+    modalBox.innerHTML = '<button class="modal-close-btn" id="modalCloseBtn">×</button>';
+    document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+    document.removeEventListener('touchmove', onTouchMove);
+    document.removeEventListener('touchend', onMouseUp);
+}
+
+document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+modalBg.addEventListener('click', e => { if (e.target === modalBg) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// Drag state (hoisted so we can remove listeners)
+let dragging = false;
+let currentSlider = null;
+
+function onMouseMove(e) {
+    if (!dragging || !currentSlider) return;
+    moveSlider(currentSlider, e.clientX);
+}
+function onTouchMove(e) {
+    if (!dragging || !currentSlider) return;
+    moveSlider(currentSlider, e.touches[0].clientX);
+}
+function onMouseUp() { dragging = false; }
+
+function moveSlider(slider, clientX) {
+    const rect = slider.rect || (slider.rect = slider.el.getBoundingClientRect());
+    let x = clientX - rect.left;
+    x = Math.max(0, Math.min(x, rect.width));
+    const pct = x / rect.width;
+    slider.afterLayer.style.width = (pct * 100) + '%';
+    slider.line.style.left = (pct * 100) + '%';
+    slider.afterImg.style.width = rect.width + 'px';
+}
+
+items.forEach(item => {
+    item.addEventListener('click', () => {
+        // Rebuild modal close button
+        modalBox.innerHTML = '<button class="modal-close-btn" id="modalCloseBtn">×</button>';
+        document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+
+        if (item.dataset.type === 'ba') {
+            const beforeSrc = item.dataset.before;
+            const afterSrc  = item.dataset.after;
+
+            const wrap = document.createElement('div');
+            wrap.className = 'ba-wrap';
+
+            const beforeImg = document.createElement('img');
+            beforeImg.src = beforeSrc;
+            beforeImg.className = 'ba-before';
+            beforeImg.alt = 'Before';
+            wrap.appendChild(beforeImg);
+
+            const afterLayer = document.createElement('div');
+            afterLayer.className = 'ba-after-layer';
+            const afterImg = document.createElement('img');
+            afterImg.src = afterSrc;
+            afterImg.alt = 'After';
+            afterLayer.appendChild(afterImg);
+            wrap.appendChild(afterLayer);
+
+            const line = document.createElement('div');
+            line.className = 'ba-line';
+            line.innerHTML = `<div class="ba-knob">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5c3a1e" stroke-width="2.5" stroke-linecap="round">
+                    <polyline points="9,18 3,12 9,6"/>
+                    <polyline points="15,18 21,12 15,6"/>
+                </svg>
+            </div>`;
+            wrap.appendChild(line);
+
+            const tagBefore = document.createElement('span');
+            tagBefore.className = 'ba-tag ba-tag-before';
+            tagBefore.textContent = 'Before';
+            wrap.appendChild(tagBefore);
+
+            const tagAfter = document.createElement('span');
+            tagAfter.className = 'ba-tag ba-tag-after';
+            tagAfter.textContent = 'After';
+            wrap.appendChild(tagAfter);
+
+            modalBox.appendChild(wrap);
+
+            // After image width = wrap width; set once loaded
+            const syncWidth = () => {
+                const w = wrap.offsetWidth;
+                afterImg.style.width = w + 'px';
+            };
+            beforeImg.addEventListener('load', syncWidth);
+            if (beforeImg.complete) syncWidth();
+
+            currentSlider = { el: wrap, afterLayer, line, afterImg, rect: null };
+
+            const startDrag = () => {
+                dragging = true;
+                currentSlider.rect = null; // reset cached rect
+            };
+            line.addEventListener('mousedown', startDrag);
+            line.addEventListener('touchstart', e => { startDrag(); e.preventDefault(); }, { passive: false });
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+            document.addEventListener('touchmove', onTouchMove, { passive: true });
+            document.addEventListener('touchend', onMouseUp);
+
+        } else {
+            const img = document.createElement('img');
+            img.src = item.querySelector('img').src;
+            img.className = 'single-img';
+            img.alt = 'Portfolio';
+            modalBox.appendChild(img);
+        }
+
+        modalBg.classList.add('open');
+    });
+});
+</script>
+
+</body>
+</html>

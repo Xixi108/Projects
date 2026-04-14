@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Dark Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!-- ── Back to Portfolio ── -->
+  <a href="../y2k-portfolio/index.html#projects" style="position:fixed;top:1rem;left:1rem;z-index:9999;background:rgba(0,0,0,0.7);color:#fff;text-decoration:none;padding:0.45rem 1rem;border-radius:999px;font-size:0.8rem;font-family:sans-serif;border:1px solid rgba(255,255,255,0.3);backdrop-filter:blur(8px);transition:background 0.2s;" onmouseover="this.style.background='rgba(255,20,147,0.8)'" onmouseout="this.style.background='rgba(0,0,0,0.7)'">← Portfolio</a>
+
+  <!-- ── Entry Overlay ── -->
+  <div id="overlay">
+    <div id="portal">
+      <div class="ring r1"></div>
+      <div class="ring r2"></div>
+      <div class="ring r3"></div>
+    </div>
+    <div id="overlay-inner">
+      <div class="gallery-tag">VIRTUAL EXHIBITION</div>
+      <h1>THE<br>DARK<br>GALLERY</h1>
+      <div class="rule"></div>
+      <p class="subtitle">Choose your avatar to begin</p>
+
+      <!-- Gender Selection -->
+      <div id="gender-select">
+        <div class="gender-row">
+
+          <button class="gender-card" data-gender="girl">
+            <svg class="gender-svg" viewBox="0 0 50 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Hair -->
+              <ellipse cx="25" cy="12" rx="13" ry="13" fill="#5c2f0a"/>
+              <rect x="12" y="12" width="4" height="20" rx="2" fill="#5c2f0a"/>
+              <rect x="34" y="12" width="4" height="20" rx="2" fill="#5c2f0a"/>
+              <!-- Head -->
+              <circle cx="25" cy="15" r="11" fill="#f5c5a0"/>
+              <circle cx="21" cy="14" r="1.5" fill="#3a2810"/>
+              <circle cx="29" cy="14" r="1.5" fill="#3a2810"/>
+              <path d="M21 19 Q25 22 29 19" stroke="#c08060" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+              <!-- Neck -->
+              <rect x="22" y="25" width="6" height="4" rx="1" fill="#f5c5a0"/>
+              <!-- Dress top -->
+              <path d="M14 30 L36 30 L38 48 L12 48 Z" fill="#e066aa"/>
+              <!-- Dress skirt -->
+              <path d="M10 48 L40 48 L44 66 L6 66 Z" fill="#ee88cc"/>
+              <!-- Neckline detail -->
+              <path d="M20 30 L25 36 L30 30" stroke="#ff99cc" stroke-width="1" fill="none"/>
+              <!-- Arms -->
+              <rect x="8" y="32" width="6" height="16" rx="3" fill="#e066aa"/>
+              <rect x="36" y="32" width="6" height="16" rx="3" fill="#e066aa"/>
+              <circle cx="11" cy="49" r="3.5" fill="#f5c5a0"/>
+              <circle cx="39" cy="49" r="3.5" fill="#f5c5a0"/>
+              <!-- Legs -->
+              <rect x="17" y="65" width="7" height="12" rx="2" fill="#f5c5a0"/>
+              <rect x="26" y="65" width="7" height="12" rx="2" fill="#f5c5a0"/>
+              <!-- Shoes -->
+              <ellipse cx="20.5" cy="78" rx="6" ry="3.5" fill="#bb44aa"/>
+              <ellipse cx="29.5" cy="78" rx="6" ry="3.5" fill="#bb44aa"/>
+            </svg>
+            <span>GIRL</span>
+          </button>
+
+          <button class="gender-card" data-gender="boy">
+            <svg class="gender-svg" viewBox="0 0 50 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Hair (short) -->
+              <ellipse cx="25" cy="10" rx="12" ry="8" fill="#3a2810"/>
+              <!-- Head -->
+              <circle cx="25" cy="15" r="11" fill="#d4a882"/>
+              <circle cx="21" cy="14" r="1.5" fill="#3a2810"/>
+              <circle cx="29" cy="14" r="1.5" fill="#3a2810"/>
+              <path d="M21 19 Q25 22 29 19" stroke="#a06040" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+              <!-- Neck -->
+              <rect x="22" y="25" width="6" height="4" rx="1" fill="#d4a882"/>
+              <!-- Shirt -->
+              <rect x="14" y="29" width="22" height="22" rx="2" fill="#3366cc"/>
+              <path d="M20 29 L25 34 L30 29" stroke="#4477dd" stroke-width="1.5" fill="none"/>
+              <!-- Arms -->
+              <rect x="8" y="31" width="6" height="18" rx="3" fill="#3366cc"/>
+              <rect x="36" y="31" width="6" height="18" rx="3" fill="#3366cc"/>
+              <circle cx="11" cy="50" r="3.5" fill="#d4a882"/>
+              <circle cx="39" cy="50" r="3.5" fill="#d4a882"/>
+              <!-- Pants -->
+              <rect x="14" y="51" width="9" height="20" rx="2" fill="#1a2855"/>
+              <rect x="27" y="51" width="9" height="20" rx="2" fill="#1a2855"/>
+              <!-- Shoes -->
+              <ellipse cx="18.5" cy="73" rx="7" ry="4" fill="#1a1410"/>
+              <ellipse cx="31.5" cy="73" rx="7" ry="4" fill="#1a1410"/>
+            </svg>
+            <span>BOY</span>
+          </button>
+
+        </div>
+      </div>
+
+      <button id="start-btn" disabled>ENTER &nbsp;→</button>
+      <div class="controls-hint">
+        <div class="hint-row"><kbd>W A S D</kbd><span>Walk</span></div>
+        <div class="hint-row"><kbd>SPACE</kbd><span>Jump</span></div>
+        <div class="hint-row"><kbd>MOUSE</kbd><span>Look Around</span></div>
+        <div class="hint-row"><kbd>CLICK</kbd><span>Inspect Art</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── App Modal (MP3 Room) ── -->
+  <div id="app-modal" class="hidden">
+    <iframe id="app-frame" src="" title="Music Player App" allow="autoplay"></iframe>
+    <button id="app-modal-close">✕ &nbsp;CLOSE</button>
+  </div>
+
+  <!-- ── Contact Modal ── -->
+  <div id="contact-modal" class="hidden">
+    <div id="contact-backdrop"></div>
+    <div id="contact-box">
+      <div class="contact-header">
+        <span class="contact-tag">✦ &nbsp;GET IN TOUCH&nbsp; ✦</span>
+        <h2>HELLO</h2>
+        <p class="contact-sub">Leave a message — I'd love to hear from you.</p>
+      </div>
+      <form id="contact-form" novalidate>
+        <div class="c-field">
+          <label for="c-name">Name</label>
+          <input id="c-name" type="text" placeholder="Your name" required />
+        </div>
+        <div class="c-field">
+          <label for="c-email">Email</label>
+          <input id="c-email" type="email" placeholder="your@email.com" required />
+        </div>
+        <div class="c-field">
+          <label for="c-message">Message</label>
+          <textarea id="c-message" rows="5" placeholder="Write something…" required></textarea>
+        </div>
+        <p id="contact-status"></p>
+        <div class="c-footer-row">
+          <div class="c-socials">
+            <span>📷 @artiniki</span>
+            <span>✉ nbaguhin@gmail.com</span>
+          </div>
+          <button type="submit" class="c-send-btn">SEND &nbsp;→</button>
+        </div>
+      </form>
+      <button id="contact-close">✕</button>
+    </div>
+  </div>
+
+  <!-- ── Zoom Modal ── -->
+  <div id="zoom-modal" class="hidden">
+    <div id="zoom-backdrop"></div>
+    <div id="zoom-content">
+      <img id="zoom-img" src="" alt="" />
+      <div id="zoom-info">
+        <h2 id="zoom-title"></h2>
+        <p id="zoom-desc"></p>
+      </div>
+      <button id="zoom-close">✕&nbsp; CLOSE</button>
+    </div>
+  </div>
+
+  <!-- ── Crosshair ── -->
+  <div id="crosshair"></div>
+  <div id="crosshair-dot"></div>
+
+  <!-- ── HUD ── -->
+  <!-- ── Resume Prompt ── -->
+  <div id="resume-prompt">
+    <div id="resume-inner">
+      <div class="resume-icon">&#9654;</div>
+      <p>CLICK TO RESUME</p>
+    </div>
+  </div>
+
+  <div id="hud">
+    <div id="hud-tip">AIM AT ART &amp; CLICK TO INSPECT · SPACE TO JUMP · ESC TO RELEASE MOUSE</div>
+    <div id="hud-btns">
+      <button id="btn-daynight" title="Toggle Day / Night">
+        <span id="dn-icon">☀</span><span id="dn-label">DAY MODE</span>
+      </button>
+      <button id="btn-music" title="Toggle Music">
+        <span id="music-icon">♪</span><span id="music-label">MUSIC OFF</span>
+      </button>
+      <button id="btn-home" title="Back to Home">⌂&nbsp;<span>HOME</span></button>
+    </div>
+  </div>
+
+  <!-- ── Tarot Reading Modal ── -->
+  <div id="tarot-modal" class="hidden">
+    <div id="tarot-bg"></div>
+    <div id="tarot-scene">
+      <div id="tarot-image-wrap">
+        <img id="tarot-img" src="" alt="" />
+        <div class="tarot-img-glow"></div>
+      </div>
+      <div id="tarot-panel">
+        <div class="tarot-tag">✦ &nbsp;Archetype Reading&nbsp; ✦</div>
+        <h2 id="tarot-name"></h2>
+        <p id="tarot-tagline"></p>
+        <div class="tarot-rule"></div>
+        <div id="tarot-reveal-zone">
+          <p id="tarot-oracle">The cards are being read for you…</p>
+          <button id="tarot-reveal-btn">Draw Your Reading</button>
+        </div>
+        <div id="tarot-reading-zone" class="t-hidden">
+          <p id="tarot-reading-text"></p>
+          <div id="tarot-aspects-row"></div>
+        </div>
+        <button id="tarot-return-btn" class="t-hidden">↩ &nbsp;Return to Gallery</button>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="c"></canvas>
+  <script type="module" src="script.js"></script>
+</body>
+</html>

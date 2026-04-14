@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About | Brew Haven</title>
+  <meta name="description" content="Brew Haven is a Manila-based coffee blog dedicated to helping coffee lovers discover the best cafés, learn about specialty coffee, and explore Manila's thriving coffee scene." />
+  <meta name="robots" content="index, follow" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/output.css">
+  <script src="script.js"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .prose-body { font-family: 'Lora', Georgia, serif; }
+  </style>
+</head>
+<body class="bg-[#0f0f0f] text-white">
+
+  <!-- NAV -->
+  <nav class="bg-[#1a1a1a] border-b border-[#333] sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="./" class="text-xl font-bold tracking-tight">☕ Brew Haven</a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex gap-8 items-center text-sm">
+        <a href="./" class="text-gray-400 hover:text-white transition">Home</a>
+        <a href="./about.html" class="text-white font-semibold transition">About</a>
+
+        <!-- Articles Dropdown -->
+        <div class="relative" id="articles-menu">
+          <button onclick="toggleArticles()" class="flex items-center gap-1.5 text-gray-400 hover:text-white transition">
+            Articles
+            <svg id="articles-chevron" class="w-3 h-3 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+          <div id="articles-dropdown" class="hidden absolute top-full left-0 mt-2 w-72 bg-[#1a1a1a] border border-[#333] rounded-xl shadow-2xl z-50">
+            <div class="p-2">
+              <a href="./blog/best-coffee-shops-manila.html" class="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-[#252525] rounded-lg transition">📍 Manila's Best Coffee Shops Guide</a>
+              <a href="./blog/pour-over-coffee-manila.html" class="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-[#252525] rounded-lg transition">🫗 Pour Over & Specialty Coffee in Manila</a>
+              <a href="./blog/coffee-guide-for-beginners.html" class="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-[#252525] rounded-lg transition">☕ Coffee Guide for Beginners</a>
+              <a href="./blog/coffee-brewing-guide.html" class="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-[#252525] rounded-lg transition">🎓 How to Appreciate Specialty Coffee</a>
+              <a href="./blog/the-den-escolta-review.html" class="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-[#252525] rounded-lg transition">⭐ The Den: Escolta Review</a>
+            </div>
+          </div>
+        </div>
+
+        <a href="./contact.html" class="bg-yellow-500 hover:bg-yellow-400 text-black font-semibold px-4 py-2 rounded-full transition">Contact</a>
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden text-gray-300 hover:text-white">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#1a1a1a] border-t border-[#333] px-6 py-4 space-y-1 text-sm">
+      <a href="./" class="block text-gray-300 hover:text-white transition py-2">Home</a>
+      <a href="./about.html" class="block text-white font-semibold py-2">About</a>
+      <div class="text-gray-500 text-xs uppercase tracking-widest pt-3 pb-1">Articles</div>
+      <a href="./blog/best-coffee-shops-manila.html" class="block text-gray-400 hover:text-white transition py-2 pl-3">Manila's Best Coffee Shops Guide</a>
+      <a href="./blog/coffee-guide-for-beginners.html" class="block text-gray-400 hover:text-white transition py-2 pl-3">Coffee Guide for Beginners</a>
+      <a href="./blog/coffee-brewing-guide.html" class="block text-gray-400 hover:text-white transition py-2 pl-3">How to Appreciate Specialty Coffee</a>
+      <a href="./blog/the-den-escolta-review.html" class="block text-gray-400 hover:text-white transition py-2 pl-3">The Den: Escolta Review</a>
+      <a href="./contact.html" class="block text-yellow-500 font-semibold hover:text-yellow-400 transition py-2">Contact</a>
+    </div>
+  </nav>
+
+  <script>
+    function toggleArticles() {
+      var dd = document.getElementById('articles-dropdown');
+      var ch = document.getElementById('articles-chevron');
+      var open = !dd.classList.contains('hidden');
+      dd.classList.toggle('hidden');
+      ch.style.transform = open ? '' : 'rotate(180deg)';
+    }
+    document.addEventListener('click', function(e) {
+      var menu = document.getElementById('articles-menu');
+      if (menu && !menu.contains(e.target)) {
+        document.getElementById('articles-dropdown').classList.add('hidden');
+        document.getElementById('articles-chevron').style.transform = '';
+      }
+    });
+  </script>
+
+  <!-- HERO -->
+  <section class="relative py-28 px-6 text-center">
+    <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31"
+         class="absolute inset-0 w-full h-full object-cover opacity-20" alt="Coffee background" />
+    <div class="relative z-10">
+      <p class="text-yellow-500 text-xs font-semibold uppercase tracking-widest mb-4">Who We Are</p>
+      <h1 class="text-4xl md:text-5xl font-bold mb-5">About Brew Haven</h1>
+      <p class="text-gray-400 max-w-xl mx-auto text-base leading-relaxed">
+        A coffee blog born out of a love for Manila's specialty coffee scene — and a mission to make great coffee accessible to everyone.
+      </p>
+    </div>
+  </section>
+
+  <!-- OUR STORY -->
+  <section class="py-20 px-6 bg-[#111]">
+    <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+      <!-- Replace this image with your own photo -->
+      <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93" class="rounded-2xl w-full h-80 object-cover" alt="Our story — replace with your own photo" />
+      <div>
+        <p class="text-yellow-500 text-xs font-semibold uppercase tracking-widest mb-3">Our Story</p>
+        <h2 class="text-2xl font-bold mb-4">Started Over a Cup of Coffee</h2>
+        <div class="prose-body space-y-4 text-gray-400 text-sm leading-relaxed">
+          <p>
+            Brew Haven started as a simple idea: Manila has incredible coffee, and not enough people know about it. We wanted to change that.
+          </p>
+          <p>
+            We visit cafés, talk to baristas, taste the brews, and write about what we find — honestly and without the jargon. Whether you're a casual coffee drinker or a growing enthusiast, our goal is to help you enjoy every cup a little more.
+          </p>
+          <p>
+            From the historic alleyways of Escolta to the modern streets of BGC, we explore Manila's coffee culture one shop at a time.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section class="py-20 px-6 bg-[#0f0f0f]">
+    <div class="max-w-3xl mx-auto text-center">
+      <p class="text-yellow-500 text-xs font-semibold uppercase tracking-widest mb-3">What We Do</p>
+      <h2 class="text-2xl font-bold mb-12">Our Mission</h2>
+      <div class="grid md:grid-cols-3 gap-8 text-left">
+        <div class="bg-[#1a1a1a] border border-[#333] rounded-xl p-6">
+          <div class="text-3xl mb-4">☕</div>
+          <h3 class="font-bold mb-2">Honest Reviews</h3>
+          <p class="text-gray-400 text-sm">We visit every café we write about. No paid placements — just real opinions from real visits.</p>
+        </div>
+        <div class="bg-[#1a1a1a] border border-[#333] rounded-xl p-6">
+          <div class="text-3xl mb-4">📖</div>
+          <h3 class="font-bold mb-2">Education First</h3>
+          <p class="text-gray-400 text-sm">We break down coffee knowledge into plain language so anyone can learn to appreciate great coffee.</p>
+        </div>
+        <div class="bg-[#1a1a1a] border border-[#333] rounded-xl p-6">
+          <div class="text-3xl mb-4">🌍</div>
+          <h3 class="font-bold mb-2">Community</h3>
+          <p class="text-gray-400 text-sm">We spotlight local roasters, baristas, and cafés that deserve more recognition across Metro Manila.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHOTO CONTRIBUTION -->
+  <section class="py-20 px-6 bg-[#181818]">
+    <div class="max-w-2xl mx-auto text-center">
+      <p class="text-yellow-500 text-xs font-semibold uppercase tracking-widest mb-3">Contribute</p>
+      <h2 class="text-2xl font-bold mb-4">Have Photos to Share?</h2>
+      <p class="text-gray-400 text-sm leading-relaxed mb-6">
+        We'd love to feature your café photos and recommendations. If you've discovered a great coffee spot in Manila or have photos you'd like to contribute, reach out — we'd love to hear from you.
+      </p>
+      <a href="./contact.html" class="bg-yellow-500 hover:bg-yellow-400 text-black font-semibold px-6 py-3 rounded-full transition inline-block">
+        Send Us a Message
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-10 bg-[#111] border-t border-[#333]">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid md:grid-cols-3 gap-12 mb-10">
+        <div>
+          <h3 class="text-xl font-bold mb-3">☕ Brew Haven</h3>
+          <p class="text-gray-400 text-sm">Your go-to blog for coffee brews, café hopping, and everything in between.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4 text-sm uppercase tracking-wider text-gray-400">Navigate</h4>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="./" class="hover:text-yellow-500 transition">Home</a></li>
+            <li><a href="./about.html" class="hover:text-yellow-500 transition">About</a></li>
+            <li><a href="./contact.html" class="hover:text-yellow-500 transition">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4 text-sm uppercase tracking-wider text-gray-400">Articles</h4>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="./blog/best-coffee-shops-manila.html" class="hover:text-yellow-500 transition">Manila's Best Coffee Shops</a></li>
+            <li><a href="./blog/coffee-guide-for-beginners.html" class="hover:text-yellow-500 transition">Coffee Guide for Beginners</a></li>
+            <li><a href="./blog/coffee-brewing-guide.html" class="hover:text-yellow-500 transition">How to Appreciate Specialty Coffee</a></li>
+            <li><a href="./blog/the-den-escolta-review.html" class="hover:text-yellow-500 transition">The Den: Escolta Review</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-[#333] pt-8 text-center text-gray-500 text-xs">
+        © 2026 Brew Haven. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

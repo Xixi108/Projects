@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Complete Guide to Manila's Best Coffee Shops</title>
+  <meta name="description" content="Explore the thriving coffee culture of Manila with our comprehensive guide to the best specialty coffee shops, roasteries, and cafés across the metro." />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="The Complete Guide to Manila's Best Coffee Shops" />
+  <meta property="og:description" content="From specialty roasters to cozy neighborhood cafés, explore Manila's thriving coffee culture." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://www.bestcoffeeshop.com/blog/best-coffee-shops-manila.html" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../dist/output.css">
+  <script src="../script.js"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .prose-body { font-family: 'Lora', Georgia, serif; }
+  </style>
+</head>
+<body class="bg-[#0f0f0f] text-white">
+
+  <!-- NAV -->
+  <nav class="bg-[#1a1a1a] border-b border-[#333] sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="../" class="text-xl font-bold tracking-tight">☕ Brew Haven</a>
+      <div class="hidden md:flex gap-8 items-center text-sm">
+        <a href="../" class="text-gray-400 hover:text-white transition">Home</a>
+        <a href="../about.html" class="text-gray-400 hover:text-white transition">About</a>
+        <div class="relative" id="articles-menu">
+          <button onclick="toggleArticles()" class="flex items-center gap-1.5 text-white font-semibold transition">
+            Articles
+            <svg id="articles-chevron" class="w-3 h-3 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+          <div id="articles-dropdown" class="hidden absolute top-full left-0 mt-2 w-72 bg-[#1a1a1a] border border-[#333] rounded-xl shadow-2xl z-50">
+            <div class="p-2">
+              <a href="./best-coffee-shops-manila.html" class="block px-4 py-3 text-sm text-white bg-[#252525] rounded-lg">📍 Manila's Best Coffee Shops Guide</a>
+              <a href="./pour-over-coffee-manila.html" class="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-[#252525] rounded-lg transition">🫗 Pour Over & Specialty Coffee in Manila</a>
+              <a href="./coffee-guide-for-beginners.html" class="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-[#252525] rounded-lg transition">☕ Coffee Guide for Beginners</a>
+              <a href="./coffee-brewing-guide.html" class="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-[#252525] rounded-lg transition">🎓 How to Appreciate Specialty Coffee</a>
+              <a href="./the-den-escolta-review.html" class="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-[#252525] rounded-lg transition">⭐ The Den: Escolta Review</a>
+            </div>
+          </div>
+        </div>
+        <a href="../contact.html" class="bg-yellow-500 hover:bg-yellow-400 text-black font-semibold px-4 py-2 rounded-full transition">Contact</a>
+      </div>
+      <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden text-gray-300 hover:text-white">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-[#1a1a1a] border-t border-[#333] px-6 py-4 space-y-1 text-sm">
+      <a href="../" class="block text-gray-300 hover:text-white transition py-2">Home</a>
+      <a href="../about.html" class="block text-gray-300 hover:text-white transition py-2">About</a>
+      <div class="text-gray-500 text-xs uppercase tracking-widest pt-3 pb-1">Articles</div>
+      <a href="./best-coffee-shops-manila.html" class="block text-white font-semibold py-2 pl-3">Manila's Best Coffee Shops Guide</a>
+      <a href="./coffee-guide-for-beginners.html" class="block text-gray-400 hover:text-white transition py-2 pl-3">Coffee Guide for Beginners</a>
+      <a href="./coffee-brewing-guide.html" class="block text-gray-400 hover:text-white transition py-2 pl-3">How to Appreciate Specialty Coffee</a>
+      <a href="./the-den-escolta-review.html" class="block text-gray-400 hover:text-white transition py-2 pl-3">The Den: Escolta Review</a>
+      <a href="../contact.html" class="block text-yellow-500 font-semibold hover:text-yellow-400 transition py-2">Contact</a>
+    </div>
+  </nav>
+  <script>
+    function toggleArticles() {
+      var dd = document.getElementById('articles-dropdown');
+      var ch = document.getElementById('articles-chevron');
+      var open = !dd.classList.contains('hidden');
+      dd.classList.toggle('hidden');
+      ch.style.transform = open ? '' : 'rotate(180deg)';
+    }
+    document.addEventListener('click', function(e) {
+      var menu = document.getElementById('articles-menu');
+      if (menu && !menu.contains(e.target)) {
+        document.getElementById('articles-dropdown').classList.add('hidden');
+        document.getElementById('articles-chevron').style.transform = '';
+      }
+    });
+  </script>
+
+  <!-- ARTICLE -->
+  <article class="max-w-2xl mx-auto px-6 py-12">
+
+    <!-- HEADER -->
+    <header class="mb-8">
+      <div class="mb-3 flex items-center gap-3">
+        <span class="text-yellow-500 text-xs font-semibold uppercase tracking-widest">Guide</span>
+        <span class="text-gray-600 text-xs">·</span>
+        <span class="text-gray-500 text-xs">March 20, 2026</span>
+      </div>
+      <h1 class="text-3xl font-bold leading-snug mb-4">The Complete Guide to Manila's Best Coffee Shops</h1>
+      <p class="text-base text-gray-400 leading-relaxed">From specialty roasters to cozy neighborhood cafés, explore the thriving coffee culture that's transforming Manila into Southeast Asia's coffee capital.</p>
+    </header>
+
+    <!-- FEATURED IMAGE -->
+    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93" alt="Manila cafe" class="w-full rounded-xl mb-10 h-64 object-cover" />
+
+    <!-- CONTENT -->
+    <div class="prose-body space-y-6 text-gray-300 leading-relaxed text-[15px]">
+
+      <h2 class="text-xl font-bold text-white mt-10 mb-3" style="font-family: Inter, sans-serif;">Manila's Coffee Revolution</h2>
+      <p>
+        Manila has undergone a remarkable transformation over the past decade. What was once a city where coffee was merely a quick morning ritual has evolved into a thriving specialty coffee hub. Today, Manila ranks among Southeast Asia's most exciting coffee destinations, attracting enthusiasts from around the region.
+      </p>
+      <p>
+        The city's coffee culture is defined by innovation, diverse brewing methods, and a genuine passion for quality. From single-origin beans sourced directly from Philippine highlands to meticulously crafted pour-overs, Manila's cafés represent the cutting edge of modern coffee culture.
+      </p>
+
+      <h2 class="text-xl font-bold text-white mt-10 mb-3" style="font-family: Inter, sans-serif;">What Makes a Great Coffee Shop?</h2>
+      <p>When evaluating Manila's best coffee shops, we consider several factors:</p>
+      <ul class="space-y-1 pl-2">
+        <li>✓ Bean quality and sourcing practices</li>
+        <li>✓ Skill and knowledge of baristas</li>
+        <li>✓ Equipment and brewing methods</li>
+        <li>✓ Atmosphere and customer experience</li>
+        <li>✓ Commitment to coffee education</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-white mt-10 mb-3" style="font-family: Inter, sans-serif;">Top Neighborhoods to Explore</h2>
+      <p>
+        Manila's best coffee shops are scattered across various neighborhoods, each with unique characteristics. Historic Escolta has emerged as a coffee district, with award-winning roasteries and specialty cafés. Malate and Makati host upscale establishments perfect for work or meetings. Meanwhile, Quezon City attracts younger coffee enthusiasts with trendy, creative spaces.
+      </p>
+
+      <h2 class="text-xl font-bold text-white mt-10 mb-3" style="font-family: Inter, sans-serif;">Best Coffee Shops in Manila — Based on Google Reviews</h2>
+      <p>
+        We compiled the highest-rated and most-reviewed coffee shops across Metro Manila, pulling from thousands of real Google reviews. Here are the standouts you shouldn't miss.
+      </p>
+
+      <!-- SHOP CARD 1 -->
+      <div class="bg-[#1a1a1a] border border-[#333] rounded-xl p-5 mt-6" style="font-family: Inter, sans-serif;">
+        <div class="flex items-start justify-between mb-2">
+          <h3 class="text-base font-bold text-white">1. Yardstick Coffee</h3>
+          <span class="text-yellow-400 text-sm font-semibold">★ 4.8 · 2,400+ reviews</span>
+        </div>
+        <p class="text-xs text-gray-500 mb-3">📍 111 Rada St, Legaspi Village, Makati City</p>
+        <p class="text-sm text-gray-300 leading-relaxed">
+          Consistently ranked Manila's best specialty coffee shop, Yardstick is a Makati institution. Reviewers rave about the precision pour-overs, exceptional single-origin espresso, and the baristas' willingness to walk you through every brew. The minimalist space doubles as a training ground for serious coffee professionals.
+        </p>
+        <p class="text-xs text-yellow-500 mt-3 italic">"Best espresso I've had outside of Italy. The baristas actually care about what they're serving." — Google Review</p>
+      </div>
+
+      <!-- SHOP CARD 2 -->
+      <div class="bg-[#1a1a1a] border border-[#333] rounded-xl p-5 mt-4" style="font-family: Inter, sans-serif;">
+        <div class="flex items-start justify-between mb-2">
+          <h3 class="text-base font-bold text-white">2. The Curator Coffee & Cocktails</h3>
+          <span class="text-yellow-400 text-sm font-semibold">★ 4.7 · 1,900+ reviews</span>
+        </div>
+        <p class="text-xs text-gray-500 mb-3">📍 134 Legazpi St, Legazpi Village, Makati City</p>
+        <p class="text-sm text-gray-300 leading-relaxed">
+          A dual-concept café and cocktail bar that proves coffee and craft cocktails belong together. Daytime visitors love the specialty coffee menu featuring rotating single-origins and experimental brew methods. Reviewers frequently highlight the knowledgeable staff and the seamless transition into evening cocktail service.
+        </p>
+        <p class="text-xs text-yellow-500 mt-3 italic">"A must-visit. Had a cortado in the afternoon and a cocktail at night — both were incredible." — Google Review</p>
+      </div>
+
+      <!-- SHOP CARD 3 -->
+      <div class="bg-[#1a1a1a] border border-[#333] rounded-xl p-5 mt-4" style="font-family: Inter, sans-serif;">
+        <div class="flex items-start justify-between mb-2">
+          <h3 class="text-base font-bold text-white">3. Habitual Coffee</h3>
+          <span class="text-yellow-400 text-sm font-semibold">★ 4.7 · 1,300+ reviews</span>
+        </div>
+        <p class="text-xs text-gray-500 mb-3">📍 8th Ave corner 35th St, Bonifacio Global City, Taguig</p>
+        <p class="text-sm text-gray-300 leading-relaxed">
+          Habitual Coffee has built a loyal following in BGC for its warm atmosphere and consistently excellent specialty drinks. Google reviewers love the signature lattes, the quality of their pastries, and the comfortable seating that makes it a perfect work-from-café spot. Their cold brew is frequently cited as the best in BGC.
+        </p>
+        <p class="text-xs text-yellow-500 mt-3 italic">"Habitually come here every week. Cold brew and almond croissant = the perfect BGC morning." — Google Review</p>
+      </div>
+
+      <!-- SHOP CARD 4 -->
+      <div class="bg-[#1a1a1a] border border-[#333] rounded-xl p-5 mt-4" style="font-family: Inter, sans-serif;">
+        <div class="flex items-start justify-between mb-2">
+          <h3 class="text-base font-bold text-white">4. Toby's Estate Coffee</h3>
+          <span class="text-yellow-400 text-sm font-semibold">★ 4.6 · 3,100+ reviews</span>
+        </div>
+        <p class="text-xs text-gray-500 mb-3">📍 Multiple locations — BGC, Salcedo Village, Alabang</p>
+        <p class="text-sm text-gray-300 leading-relaxed">
+          An Australian-born roastery with deep roots in Manila's specialty scene. Toby's Estate is praised for consistency across branches, excellent barista training, and a broad menu that caters to both coffee purists and casual drinkers. The BGC flagship is a go-to for business meetings and remote work.
+        </p>
+        <p class="text-xs text-yellow-500 mt-3 italic">"Reliable quality at every branch. My flat white is perfect every single time." — Google Review</p>
+      </div>
+
+      <!-- SHOP CARD 5 -->
+      <div class="bg-[#1a1a1a] border border-[#333] rounded-xl p-5 mt-4" style="font-family: Inter, sans-serif;">
+        <div class="flex items-start justify-between mb-2">
+          <h3 class="text-base font-bold text-white">5. Craft Coffee Revolution</h3>
+          <span class="text-yellow-400 text-sm font-semibold">★ 4.6 · 800+ reviews</span>
+        </div>
+        <p class="text-xs text-gray-500 mb-3">📍 The Collective, Malugay St, Makati City</p>
+        <p class="text-sm text-gray-300 leading-relaxed">
+          Nestled inside the artisan market at The Collective, Craft Coffee Revolution is a favorite among Makati's creative crowd. Reviewers highlight the locally sourced Philippine beans, the innovative seasonal menu, and the laid-back vibe that sets it apart from more corporate café experiences.
+        </p>
+        <p class="text-xs text-yellow-500 mt-3 italic">"Hidden gem inside The Collective. The Philippine single-origin pour-over is something else entirely." — Google Review</p>
+      </div>
+
+      <!-- SHOP CARD 6 -->
+      <div class="bg-[#1a1a1a] border border-[#333] rounded-xl p-5 mt-4" style="font-family: Inter, sans-serif;">
+        <div class="flex items-start justify-between mb-2">
+          <h3 class="text-base font-bold text-white">6. % Arabica Manila</h3>
+          <span class="text-yellow-400 text-sm font-semibold">★ 4.5 · 4,200+ reviews</span>
+        </div>
+        <p class="text-xs text-gray-500 mb-3">📍 SM Aura Premier, McKinley Pkwy, BGC, Taguig</p>
+        <p class="text-sm text-gray-300 leading-relaxed">
+          The Japanese specialty chain brings its iconic minimalist aesthetic and precise brewing to BGC. Despite the long queues (a common mention in reviews), visitors agree the signature % latte and hand-drip coffee are worth every minute. Perfect for the 'gram and equally rewarding for the palate.
+        </p>
+        <p class="text-xs text-yellow-500 mt-3 italic">"The queue is real but so is the coffee. The % latte tastes like clouds. Highly recommend." — Google Review</p>
+      </div>
+
+      <!-- QUICK REFERENCE TABLE -->
+      <div class="mt-8 overflow-x-auto" style="font-family: Inter, sans-serif;">
+        <h3 class="text-base font-bold text-white mb-4">Quick Comparison</h3>
+        <table class="w-full text-sm text-left border-collapse">
+          <thead>
+            <tr class="border-b border-[#333]">
+              <th class="py-2 pr-4 text-gray-400 font-semibold">Coffee Shop</th>
+              <th class="py-2 pr-4 text-gray-400 font-semibold">Rating</th>
+              <th class="py-2 text-gray-400 font-semibold">Best For</th>
+            </tr>
+          </thead>
+          <tbody class="text-gray-300">
+            <tr class="border-b border-[#222]">
+              <td class="py-2 pr-4">Yardstick Coffee</td>
+              <td class="py-2 pr-4 text-yellow-400">★ 4.8</td>
+              <td class="py-2">Specialty espresso &amp; pour-over</td>
+            </tr>
+            <tr class="border-b border-[#222]">
+              <td class="py-2 pr-4">The Curator</td>
+              <td class="py-2 pr-4 text-yellow-400">★ 4.7</td>
+              <td class="py-2">Coffee &amp; cocktails, date spot</td>
+            </tr>
+            <tr class="border-b border-[#222]">
+              <td class="py-2 pr-4">Habitual Coffee</td>
+              <td class="py-2 pr-4 text-yellow-400">★ 4.7</td>
+              <td class="py-2">Cold brew, WFH sessions</td>
+            </tr>
+            <tr class="border-b border-[#222]">
+              <td class="py-2 pr-4">Toby's Estate</td>
+              <td class="py-2 pr-4 text-yellow-400">★ 4.6</td>
+              <td class="py-2">Consistency, flat whites</td>
+            </tr>
+            <tr class="border-b border-[#222]">
+              <td class="py-2 pr-4">Craft Coffee Revolution</td>
+              <td class="py-2 pr-4 text-yellow-400">★ 4.6</td>
+              <td class="py-2">Local PH beans, artsy vibe</td>
+            </tr>
+            <tr>
+              <td class="py-2 pr-4">% Arabica Manila</td>
+              <td class="py-2 pr-4 text-yellow-400">★ 4.5</td>
+              <td class="py-2">Aesthetic, Japanese-style coffee</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-xl font-bold text-white mt-10 mb-3" style="font-family: Inter, sans-serif;">The Future of Manila's Coffee Scene</h2>
+      <p>
+        As Manila's coffee culture continues to mature, we can expect even more innovation. Local roasteries are establishing themselves internationally, Filipinos are winning global coffee competitions, and the community's passion for quality continues to grow. Whether you're a casual coffee drinker or a serious enthusiast, Manila's coffee shops offer something for everyone.
+      </p>
+
+    </div>
+
+    <!-- BACK TO BLOG -->
+    <div class="mt-12 pt-6 border-t border-[#333]">
+      <a href="../" class="text-yellow-500 text-sm font-semibold hover:text-yellow-400 transition">
+        ← Back to Home
+      </a>
+    </div>
+
+  </article>
+
+  <!-- FOOTER -->
+  <footer class="py-8 text-center text-gray-600 text-xs bg-[#111] mt-12 border-t border-[#222]">
+    © 2026 Brew Haven. All rights reserved.
+  </footer>
+
+</body>
+</html>

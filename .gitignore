@@ -1,1 +1,4 @@
 *.tif
+
+.git_bak/
+node_modules/
