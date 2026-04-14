@@ -2,3 +2,6 @@
 
 .git_bak/
 node_modules/
+
+*.mp4
+*.mov
