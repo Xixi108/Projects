@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(magick --version)",
+      "Bash(convert --version)",
+      "Bash(cwebp --version)",
+      "Bash(python -c \"from PIL import Image; print\\('Pillow OK'\\)\")",
+      "Bash(ls \"c:/Users/Nikki108/OneDrive/Desktop/Retouch Portfolio/\"*.webp)",
+      "Bash(python)",
+      "Bash(python build_grid.py)"
+    ]
+  }
+}
