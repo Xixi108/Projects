@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ArtiNiki ✨ Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Press+Start+2P&family=Quicksand:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ✦ Loader ✦ -->
+  <div id="loader">
+    <div class="loader-content">
+      <div class="loader-dual">
+        <span class="loader-brand-art">ArtiNiki</span>
+        <span class="loader-sep">✦</span>
+        <span class="loader-brand-retouch">Retouching by Nikki</span>
+      </div>
+      <div class="loader-bar-wrap">
+        <div class="loader-bar" id="loaderBar"></div>
+      </div>
+      <div class="loader-text">Loading...</div>
+    </div>
+  </div>
+
+  <!-- ✦ Sparkle Canvas ✦ -->
+  <canvas id="sparkleCanvas"></canvas>
+
+  <!-- ✦ Navigation ✦ -->
+  <nav id="mainNav">
+    <a href="#hero" class="nav-brand brand-art">Nikki Lou ✦</a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ✦ Hero — About Me ✦ -->
+  <section id="hero" class="hero-home">
+    <div class="hero-stars-bg">
+      <span class="hstar hs1">✦</span>
+      <span class="hstar hs2">★</span>
+      <span class="hstar hs3">✦</span>
+      <span class="hstar hs4">⭐</span>
+      <span class="hstar hs5">★</span>
+      <span class="hstar hs6">✦</span>
+    </div>
+
+    <div class="hero-home-inner">
+      <!-- Avatar -->
+      <div class="hero-left">
+        <div class="avatar-glow-wrap">
+          <div class="avatar-outer-ring"></div>
+          <div class="avatar-inner-ring"></div>
+          <div class="avatar-img-circle">
+            <img src="../Retouch Portfolio/Nikki.webp" alt="Nikki" class="hero-portrait" />
+          </div>
+          <div class="avatar-badge-home">✦ ArtiNiki</div>
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <div class="hero-right">
+        <div class="hero-greeting">✦ hello, world ✦</div>
+        <h1 class="hero-name glitter-text">Nikki Lou</h1>
+        <div class="hero-roles-bar">
+          <span class="hero-role">Creative Designer</span>
+          <span class="hero-dot">✦</span>
+          <span class="hero-role">Aspiring Game Dev</span>
+          <span class="hero-dot">✦</span>
+          <span class="hero-role">Web Designer</span>
+        </div>
+        <div class="hero-divider-line"></div>
+        <p class="hero-bio-text">
+          Hi, I'm <strong>Nikki</strong> — a creative designer and aspiring game developer with a strong passion for building immersive digital experiences. My work focuses on combining visual design, storytelling, and user experience to create engaging and memorable projects.
+        </p>
+        <p class="hero-bio-text">
+          I have a growing background in game concept development, character design, and UI/UX design. I enjoy working on creative concepts such as indie horror games, narrative-driven experiences, and stylized visual content. My approach blends aesthetics with functionality, ensuring that each project is not only visually compelling but also thoughtfully designed.
+        </p>
+        <p class="hero-bio-text">
+          I'm always open to new opportunities, collaborations, and creative challenges. ✿
+        </p>
+        <div class="hero-ctas">
+          <a href="#projects" class="btn-hero-pri">View Projects ✦</a>
+          <a href="#contact" class="btn-hero-sec">Contact Me</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ✦ Marquee ✦ -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>✦ NIKKI LOU ✦ CREATIVE DESIGNER ✦ ASPIRING GAME DEV ✦ WEB DESIGNER ✦ ARTINIKI ✦ RETOUCHING BY NIKKI ✦ PHOTO MANIPULATION ✦ PORTRAIT RETOUCHING ✦ DIGITAL ILLUSTRATION ✦ NIKKI LOU ✦ CREATIVE DESIGNER ✦ ASPIRING GAME DEV ✦ WEB DESIGNER ✦ ARTINIKI ✦ RETOUCHING BY NIKKI ✦ PHOTO MANIPULATION ✦ PORTRAIT RETOUCHING ✦ DIGITAL ILLUSTRATION ✦</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SERVICES
+       ═══════════════════════════════════════════ -->
+  <section id="services" class="services-section">
+    <div class="section-container">
+      <div class="services-header">
+        <span class="svc-star">★</span>
+        <h2 class="services-title">Services</h2>
+        <span class="svc-star">★</span>
+      </div>
+      <p class="services-intro-text">I offer creative and professional visual services tailored to your project's needs.</p>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">📸</div>
+          <h3 class="service-name">Photo Retouching</h3>
+          <p class="service-desc">Beauty, Portrait, Editorial</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🎨</div>
+          <h3 class="service-name">Color Correction &amp; Cleanup</h3>
+          <p class="service-desc">Lighting enhancement, color grading, and background removal</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🖌️</div>
+          <h3 class="service-name">Digital Illustration &amp; Artwork</h3>
+          <p class="service-desc">Original illustrations and creative digital artwork</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">✨</div>
+          <h3 class="service-name">Personal &amp; Conceptual Projects</h3>
+          <p class="service-desc">Experimental and conceptual visual storytelling</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       PROJECTS
+       ═══════════════════════════════════════════ -->
+  <section id="projects" class="projects-section">
+    <div class="section-container">
+      <div class="projects-header">
+        <span class="svc-star">★</span>
+        <h2 class="projects-title">Projects</h2>
+        <span class="svc-star">★</span>
+      </div>
+      <p class="projects-intro">Interactive builds and creative experiments — click to explore.</p>
+
+      <div class="projects-grid">
+
+        <!-- The Dark Gallery -->
+        <div class="project-card">
+          <div class="project-preview gallery-preview">
+            <span class="proj-emoji">🏛️</span>
+            <div class="proj-rings">
+              <div class="proj-ring pr1"></div>
+              <div class="proj-ring pr2"></div>
+            </div>
+          </div>
+          <div class="project-body">
+            <div class="proj-tags">
+              <span class="proj-tag">Three.js</span>
+              <span class="proj-tag">3D</span>
+              <span class="proj-tag">Interactive</span>
+            </div>
+            <h3 class="project-name">The Dark Gallery</h3>
+            <p class="project-desc">A 3D walkable art gallery. Choose your avatar and explore artwork in an immersive virtual space with day/night mode and tarot readings.</p>
+            <a href="../walking portfolio/index.html" class="btn-project btn-project-silver">View Project ✦</a>
+          </div>
+        </div>
+
+        <!-- Brew Haven -->
+        <div class="project-card">
+          <div class="project-preview cafe-preview">
+            <span class="proj-emoji">☕</span>
+          </div>
+          <div class="project-body">
+            <div class="proj-tags">
+              <span class="proj-tag">HTML/CSS</span>
+              <span class="proj-tag">Blog</span>
+              <span class="proj-tag">Tailwind</span>
+            </div>
+            <h3 class="project-name">Brew Haven</h3>
+            <p class="project-desc">A Manila coffee blog — café hopping guides, specialty coffee reviews, brew tips, and everything in between for every coffee lover.</p>
+            <a href="../coffeeshop/index.html" class="btn-project btn-project-pink">View Project ✦</a>
+          </div>
+        </div>
+
+        <!-- MP2 Calculator -->
+        <div class="project-card">
+          <div class="project-preview calc-preview">
+            <span class="proj-emoji">🌻</span>
+          </div>
+          <div class="project-body">
+            <div class="proj-tags">
+              <span class="proj-tag">JavaScript</span>
+              <span class="proj-tag">Finance</span>
+              <span class="proj-tag">Tool</span>
+            </div>
+            <h3 class="project-name">MP2 Bloom Calculator</h3>
+            <p class="project-desc">Track your MP2 savings over 6 years and watch your money bloom — with monthly breakdowns, compounded growth, and a sunflower progress tracker.</p>
+            <a href="../p2 calculator/index.html" class="btn-project btn-project-green">View Project ✦</a>
+          </div>
+        </div>
+
+        <!-- Retouching by Nikki -->
+        <div class="project-card">
+          <div class="project-preview retouch-preview">
+            <span class="proj-emoji">🪄</span>
+          </div>
+          <div class="project-body">
+            <div class="proj-tags">
+              <span class="proj-tag">Photo Edit</span>
+              <span class="proj-tag">Retouch</span>
+              <span class="proj-tag">Restoration</span>
+            </div>
+            <h3 class="project-name">Retouching by Nikki</h3>
+            <p class="project-desc">A dedicated retouching portfolio — portrait edits, lifestyle photography, real estate, photo restoration, and creative manipulations.</p>
+            <a href="retouching.html" class="btn-project btn-project-lavender">View Gallery ✦</a>
+          </div>
+        </div>
+
+        <!-- ArtiNiki -->
+        <div class="project-card">
+          <div class="project-preview artiniki-preview">
+            <span class="proj-emoji">🎨</span>
+          </div>
+          <div class="project-body">
+            <div class="proj-tags">
+              <span class="proj-tag">Illustration</span>
+              <span class="proj-tag">Digital Art</span>
+              <span class="proj-tag">Xixi Art</span>
+            </div>
+            <h3 class="project-name">ArtiNiki</h3>
+            <p class="project-desc">Personal visual space — a collection of digital illustrations, character art, and emotion-driven artwork created with Ibis Paint and Xixi Art.</p>
+            <a href="artiniki.html" class="btn-project btn-project-pink">View Gallery ✦</a>
+          </div>
+        </div>
+
+        <!-- Children's Learning Game -->
+        <div class="project-card">
+          <div class="project-preview" style="background:linear-gradient(135deg,#1a0533,#2d0a5e);display:flex;align-items:center;justify-content:center;">
+            <span class="proj-emoji">🌟</span>
+          </div>
+          <div class="project-body">
+            <div class="proj-tags">
+              <span class="proj-tag">JavaScript</span>
+              <span class="proj-tag">Kids</span>
+              <span class="proj-tag">Game</span>
+            </div>
+            <h3 class="project-name">Fun Learning Games</h3>
+            <p class="project-desc">A colorful interactive learning hub for kids — featuring math challenges, coloring activities, and star-collecting mini games.</p>
+            <a href="../children game/index.html" class="btn-project btn-project-green">Play Now ✦</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ARTINIKI — moved to artiniki.html
+       RETOUCHING — moved to retouching.html
+       ═══════════════════════════════════════════ -->
+  <!-- ═══════════════════════════════════════════
+       ABOUT
+       ═══════════════════════════════════════════ -->
+  <section id="about">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="pixel-star">★</span>
+        <h2 class="section-title">About Me</h2>
+        <span class="pixel-star">★</span>
+      </div>
+      <div class="about-card">
+        <div class="about-avatar">
+          <div class="avatar-circle">
+            <img src="../Retouch Portfolio/Nikki.webp" alt="Nikki" class="avatar-img" />
+          </div>
+          <div class="avatar-badge">ArtiNiki</div>
+        </div>
+        <div class="about-text">
+          <p>Hi, I'm <strong>Nikki</strong> — a creative designer and aspiring game developer with a strong passion for building immersive digital experiences. My work focuses on combining visual design, storytelling, and user experience to create engaging and memorable projects.</p>
+          <p>I have a growing background in game concept development, character design, and UI/UX design. I enjoy working on creative concepts such as indie horror games, narrative-driven experiences, and stylized visual content.</p>
+          <p>In addition to game development, I'm interested in digital content creation and web design. I'm continuously learning and improving my skills, with a strong commitment to developing high-quality work and meaningful user experiences. 💖</p>
+          <div class="services-label">✨ Skills &amp; Focus Areas:</div>
+          <div class="skills-list">
+            <span class="skill-tag">🎮 Game Concept Development</span>
+            <span class="skill-tag">🎨 Character Design</span>
+            <span class="skill-tag">🖥️ UI/UX Design</span>
+            <span class="skill-tag">📸 Photo Retouching</span>
+            <span class="skill-tag">🖌️ Digital Illustration</span>
+            <span class="skill-tag">🌐 Web Design</span>
+            <span class="skill-tag">🌀 Photo Manipulation</span>
+            <span class="skill-tag">🔄 Photo Restoration</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CONTACT
+       ═══════════════════════════════════════════ -->
+  <section id="contact">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="pixel-star">★</span>
+        <h2 class="section-title">Say Hello!</h2>
+        <span class="pixel-star">★</span>
+      </div>
+      <div class="contact-box">
+        <p class="contact-intro">I'd love to hear from you! ✨ Whether it's a collab, commission, or just to say hi — drop me a message! 💌</p>
+        <form class="contact-form" action="mailto:nbaguhin@gmail.com" method="get" enctype="text/plain">
+          <input type="text" name="name" placeholder="Your name ✨" class="form-input" />
+          <input type="email" name="email" placeholder="Your email 💌" class="form-input" />
+          <textarea name="body" placeholder="Your message 🌸" class="form-textarea" rows="4"></textarea>
+          <button type="submit" class="btn-send">Send ♥</button>
+        </form>
+        <div class="social-links">
+          <a href="https://www.instagram.com/artiniki_lou" target="_blank" class="social-btn">📷 @artiniki_lou</a>
+          <a href="mailto:nbaguhin@gmail.com" class="social-btn">✉️ nbaguhin@gmail.com</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ✦ Footer ✦ -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-dual">
+        <span class="footer-brand-art">ArtiNiki</span>
+        <span class="footer-sep">✦</span>
+        <span class="footer-brand-retouch">Retouching by Nikki</span>
+      </div>
+      <p class="footer-text">Made with 💖 and lots of pink</p>
+      <div class="visitor-counter">
+        <span class="counter-label">✦ Visitors ✦</span>
+        <span class="counter-num" id="visitorCount">000842</span>
+      </div>
+      <p class="footer-copy">© 2000 Nikki — Best viewed in 800x600 🌸</p>
+    </div>
+  </footer>
+
+  <!-- ✦ Back to Top ✦ -->
+  <button id="backToTop" aria-label="Back to top">▲</button>
+
+  <!-- ✦ AI Chat Widget ✦ -->
+  <button id="chatFab" class="chat-fab" aria-label="AI Assistant">
+    <span class="chat-fab-icon">✦</span>
+    <span class="chat-fab-label">Ask AI</span>
+    <span class="chat-fab-pulse"></span>
+  </button>
+
+  <div id="chatPanel" class="chat-panel" aria-hidden="true">
+    <!-- Header -->
+    <div class="chat-header">
+      <div class="chat-header-left">
+        <div class="chat-avatar-sm">✦</div>
+        <div>
+          <div class="chat-ai-name">Nikki's AI ✨</div>
+          <div class="chat-ai-status"><span class="status-dot"></span>Online — ask me anything!</div>
+        </div>
+      </div>
+      <div class="chat-header-right">
+        <button id="chatSettingsBtn" class="chat-icon-btn" title="Claude API Key">⚙</button>
+        <button id="chatCloseBtn" class="chat-icon-btn" title="Close">✕</button>
+      </div>
+    </div>
+
+    <!-- API Key Panel (hidden by default) -->
+    <div id="apiKeyPanel" class="api-key-panel" hidden>
+      <div class="api-key-label">✦ Claude API Key</div>
+      <div class="api-key-row">
+        <input type="password" id="apiKeyInput" class="api-key-input" placeholder="sk-ant-api03-..." autocomplete="off" />
+        <button id="apiKeySaveBtn" class="api-key-save">Save</button>
+      </div>
+      <div class="api-key-hint">Get yours at console.anthropic.com · Stored locally, never shared · Powers real AI responses</div>
+    </div>
+
+    <!-- Messages -->
+    <div class="chat-messages" id="chatMessages" role="log">
+      <div class="chat-msg ai-msg">
+        <div class="msg-avatar-sm">✦</div>
+        <div class="msg-bubble">Hi! I'm Nikki's AI assistant ✨ I can tell you all about her work, skills, and projects. What would you like to know?</div>
+      </div>
+    </div>
+
+    <!-- Quick chips -->
+    <div class="chat-chips" id="chatChips">
+      <button class="chat-chip" data-msg="Tell me about her projects">📁 Projects</button>
+      <button class="chat-chip" data-msg="What are her skills?">⚡ Skills</button>
+      <button class="chat-chip" data-msg="How can I hire or collaborate with her?">💼 Hire</button>
+      <button class="chat-chip" data-msg="Tell me about her art">🎨 Art</button>
+    </div>
+
+    <!-- Input -->
+    <div class="chat-input-row">
+      <input type="text" id="chatInput" class="chat-input" placeholder="Ask about Nikki's work..." maxlength="300" autocomplete="off" />
+      <button id="chatSendBtn" class="chat-send-btn" aria-label="Send">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 8L2 2l2 6-2 6 12-6z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

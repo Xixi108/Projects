@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ArtiNiki ✨ Art Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Press+Start+2P&family=Quicksand:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ✦ Sparkle Canvas ✦ -->
+  <canvas id="sparkleCanvas"></canvas>
+
+  <!-- ── Back to Portfolio ── -->
+  <a href="index.html#projects" style="position:fixed;top:1rem;left:1rem;z-index:9999;background:rgba(0,0,0,0.7);color:#fff;text-decoration:none;padding:0.45rem 1rem;border-radius:999px;font-size:0.8rem;font-family:sans-serif;border:1px solid rgba(255,255,255,0.3);backdrop-filter:blur(8px);transition:background 0.2s;" onmouseover="this.style.background='rgba(255,20,147,0.8)'" onmouseout="this.style.background='rgba(0,0,0,0.7)'">← Portfolio</a>
+
+  <!-- ✦ Navigation ✦ -->
+  <nav id="mainNav">
+    <a href="index.html" class="nav-brand brand-art">Nikki Lou ✦</a>
+    <ul class="nav-links">
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════
+       ARTINIKI — Personal Creative Space
+       ═══════════════════════════════════════════ -->
+  <section id="artiniki" class="artiniki-section" style="padding-top: calc(var(--nav-h) + 3rem);">
+    <div class="section-container">
+      <div class="brand-header">
+        <h2 class="brand-name art-brand-name glitter-text">ArtiNiki</h2>
+        <div class="brand-rule art-rule"></div>
+        <p class="brand-intro-para">
+          This is my personal visual space. A collection of illustrations, experimental pieces,
+          and emotion-driven artwork inspired by chaos, softness, and contrast.
+        </p>
+        <p class="brand-tagline art-tagline-text">
+          These works are not meant to be perfect — they're meant to feel.
+        </p>
+      </div>
+
+      <div class="filter-bar filter-bar-art">
+        <button class="filter-btn-art active" data-filter-art="all">All ✦</button>
+        <button class="filter-btn-art" data-filter-art="ibis">🖌️ Ibis Paint</button>
+        <button class="filter-btn-art" data-filter-art="xixi">🎀 Xixi Art</button>
+      </div>
+
+      <div class="gallery-grid">
+
+        <!-- Ibis Paint Digital Art -->
+        <div class="art-card" data-cat-art="ibis">
+          <div class="art-img-wrap"><img src="artwork/motherandchild.png" alt="Mother and Child" class="art-photo" /></div>
+          <div class="art-info"><span class="art-title">Mother & Child</span><span class="art-tag">Digital</span></div>
+        </div>
+        <div class="art-card" data-cat-art="ibis">
+          <div class="art-img-wrap"><img src="artwork/whitehair.png" alt="White Hair" class="art-photo" /></div>
+          <div class="art-info"><span class="art-title">White Hair</span><span class="art-tag">Digital</span></div>
+        </div>
+        <div class="art-card" data-cat-art="ibis">
+          <div class="art-img-wrap"><img src="artwork/sjalk.png" alt="Sjalk" class="art-photo" /></div>
+          <div class="art-info"><span class="art-title">Illustration</span><span class="art-tag">Digital</span></div>
+        </div>
+        <div class="art-card" data-cat-art="ibis">
+          <div class="art-img-wrap"><img src="artwork/1000000410.png" alt="Digital Art" class="art-photo" /></div>
+          <div class="art-info"><span class="art-title">Digital Art</span><span class="art-tag">Digital</span></div>
+        </div>
+        <div class="art-card" data-cat-art="ibis">
+          <div class="art-img-wrap"><img src="artwork/1000000411.png" alt="Digital Art" class="art-photo" /></div>
+          <div class="art-info"><span class="art-title">Digital Art</span><span class="art-tag">Digital</span></div>
+        </div>
+        <div class="art-card" data-cat-art="ibis">
+          <div class="art-img-wrap"><img src="artwork/1000000412.png" alt="Digital Art" class="art-photo" /></div>
+          <div class="art-info"><span class="art-title">Digital Art</span><span class="art-tag">Digital</span></div>
+        </div>
+
+        <!-- Xixi Art -->
+        <div class="art-card" data-cat-art="xixi">
+          <div class="art-img-wrap"><img src="artwork/xixi.png" alt="Xixi Art" class="art-photo" /></div>
+          <div class="art-info"><span class="art-title">Xixi</span><span class="art-tag">Xixi Art</span></div>
+        </div>
+        <div class="art-card" data-cat-art="xixi">
+          <div class="art-img-wrap"><img src="artwork/cabbi.png" alt="Cabbi" class="art-photo" /></div>
+          <div class="art-info"><span class="art-title">Cabbi</span><span class="art-tag">Xixi Art</span></div>
+        </div>
+        <div class="art-card" data-cat-art="xixi">
+          <div class="art-img-wrap"><img src="artwork/heart.png" alt="Heart" class="art-photo" /></div>
+          <div class="art-info"><span class="art-title">Heart</span><span class="art-tag">Xixi Art</span></div>
+        </div>
+        <div class="art-card" data-cat-art="xixi">
+          <div class="art-img-wrap"><img src="artwork/sunflower.png" alt="Sunflower" class="art-photo" /></div>
+          <div class="art-info"><span class="art-title">Sunflower</span><span class="art-tag">Xixi Art</span></div>
+        </div>
+        <div class="art-card" data-cat-art="xixi">
+          <div class="art-img-wrap"><img src="artwork/xixi1.png" alt="Xixi 1" class="art-photo" /></div>
+          <div class="art-info"><span class="art-title">Xixi Series</span><span class="art-tag">Xixi Art</span></div>
+        </div>
+        <div class="art-card" data-cat-art="xixi">
+          <div class="art-img-wrap"><img src="artwork/xixi2.png" alt="Xixi 2" class="art-photo" /></div>
+          <div class="art-info"><span class="art-title">Xixi Series</span><span class="art-tag">Xixi Art</span></div>
+        </div>
+
+      </div>
+
+      <div class="art-ig-link">
+        <a href="https://www.instagram.com/artiniki_lou" target="_blank" class="btn-ig">📷 Follow on Instagram: @artiniki_lou</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ✦ Footer ✦ -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-dual">
+        <span class="footer-brand-art">ArtiNiki</span>
+      </div>
+      <p class="footer-text">Made with 💖 and lots of pink</p>
+      <p class="footer-copy">© 2000 Nikki — Best viewed in 800x600 🌸</p>
+    </div>
+  </footer>
+
+  <!-- ✦ Back to Top ✦ -->
+  <button id="backToTop" aria-label="Back to top">▲</button>
+
+  <script src="script.js"></script>
+</body>
+</html>

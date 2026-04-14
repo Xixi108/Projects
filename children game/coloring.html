@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color & Draw! 🎨</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0d0621;
+    font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    overflow-x: hidden;
+    user-select: none;
+  }
+
+  /* ── Top Bar ── */
+  .topbar {
+    background: rgba(255,255,255,0.06);
+    border-bottom: 2px solid rgba(255,105,180,0.3);
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    position: relative; z-index: 5;
+  }
+  .back-btn {
+    text-decoration: none; color: #c8a8ff; font-size: 14px;
+    background: rgba(255,255,255,0.08); padding: 6px 14px;
+    border-radius: 20px; transition: background 0.2s; white-space: nowrap;
+  }
+  .back-btn:hover { background: rgba(255,255,255,0.16); }
+  .topbar h1 { font-size: 20px; color: #ff69b4; margin-right: auto; }
+
+  /* ── Scene Selector ── */
+  .scene-bar {
+    background: rgba(0,0,0,0.35);
+    padding: 8px 14px;
+    display: flex; gap: 8px; overflow-x: auto; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    position: relative; z-index: 5;
+  }
+  .scene-bar span { font-size: 12px; color: #9070b0; white-space: nowrap; margin-right: 4px; }
+  .scene-btn {
+    background: rgba(255,255,255,0.07);
+    border: 2px solid rgba(255,255,255,0.15);
+    color: white; padding: 6px 16px; border-radius: 20px;
+    cursor: pointer; font-family: inherit; font-size: 13px;
+    white-space: nowrap; transition: all 0.2s; flex-shrink: 0;
+  }
+  .scene-btn:hover  { background: rgba(255,105,180,0.2); border-color: #ff69b480; }
+  .scene-btn.active { background: #ff69b4; border-color: #ff69b4; font-weight: bold; }
+
+  /* ── Main Layout ── */
+  .main { display: flex; flex: 1; overflow: hidden; }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 92px; background: rgba(0,0,0,0.45);
+    border-right: 1px solid rgba(255,255,255,0.07);
+    padding: 12px 8px; display: flex; flex-direction: column;
+    gap: 10px; overflow-y: auto; flex-shrink: 0;
+  }
+  .sidebar-label {
+    font-size: 10px; color: #7050a0; text-align: center;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+
+  .tool-group { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+  .tool-btn {
+    width: 56px; height: 52px;
+    background: rgba(255,255,255,0.07);
+    border: 2px solid rgba(255,255,255,0.14);
+    border-radius: 14px; cursor: pointer;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2px; color: white;
+    margin: 0 auto; transition: all 0.15s; font-family: inherit;
+  }
+  .tool-btn .icon { font-size: 22px; line-height: 1; }
+  .tool-btn .label { font-size: 9px; color: #a080c0; }
+  .tool-btn:hover  { background: rgba(255,105,180,0.18); border-color: #ff69b460; }
+  .tool-btn.active { background: rgba(255,105,180,0.32); border-color: #ff69b4; }
+
+  /* Brush sizes */
+  .size-group { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .size-ring {
+    display: flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2); cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .size-ring:hover  { border-color: rgba(255,105,180,0.6); }
+  .size-ring.active { border-color: #ff69b4; }
+  .size-dot { border-radius: 50%; background: white; }
+
+  /* Color swatches */
+  .current-color-wrap { text-align: center; }
+  .current-color {
+    width: 46px; height: 46px; border-radius: 50%;
+    margin: 0 auto 3px;
+    border: 3px solid rgba(255,255,255,0.35);
+    box-shadow: 0 0 14px rgba(0,0,0,0.5);
+  }
+  .current-color-label { font-size: 9px; color: #7050a0; }
+
+  .palette { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+  .swatch {
+    width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.15);
+    transition: transform 0.1s, border-color 0.1s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+  .swatch:hover  { transform: scale(1.18); }
+  .swatch.active { border-color: white; transform: scale(1.18); box-shadow: 0 0 0 2px #ff69b4, 0 2px 6px rgba(0,0,0,0.4); }
+
+  /* Actions */
+  .action-group { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+  .action-btn {
+    width: 56px; padding: 7px 4px;
+    background: rgba(255,255,255,0.07);
+    border: 2px solid rgba(255,255,255,0.14);
+    border-radius: 12px; cursor: pointer;
+    font-family: inherit; color: white; font-size: 10px;
+    text-align: center; display: block; line-height: 1.5;
+    transition: all 0.15s;
+  }
+  .action-btn .icon { font-size: 18px; display: block; }
+  .action-btn:hover { background: rgba(255,255,255,0.14); }
+  .action-btn.red:hover { background: rgba(255,60,60,0.22); border-color: rgba(255,60,60,0.7); }
+
+  /* ── Canvas Area ── */
+  .canvas-area {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    padding: 18px;
+    background: radial-gradient(ellipse at center, #1a0838 0%, #0d0621 100%);
+    overflow: hidden;
+  }
+
+  /* The "page" — white paper feel */
+  .page-wrap {
+    position: relative;
+    border-radius: 12px;
+    box-shadow:
+      0 0 0 3px rgba(255,105,180,0.25),
+      0 0 40px rgba(255,105,180,0.15),
+      0 12px 40px rgba(0,0,0,0.6),
+      4px 4px 0 rgba(0,0,0,0.3);
+    cursor: crosshair;
+    background: white;  /* The page background */
+  }
+
+  /* Color canvas sits on the white page */
+  #colorCanvas {
+    display: block;
+    position: relative;
+    z-index: 1;
+    cursor: crosshair;
+    /* transparent — white page shows through */
+  }
+
+  /* SVG line art sits on TOP of colours — multiply blend = white→transparent, black→black */
+  #lineArt {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    display: block;
+  }
+
+  /* hidden outline canvas for flood-fill boundary detection */
+  #outlineCanvas { display: none; }
+
+  /* Loading indicator */
+  .loading {
+    position: absolute; inset: 0; z-index: 10;
+    display: none; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.7); border-radius: 12px;
+    font-size: 28px; color: #9070b0;
+  }
+  .loading.show { display: flex; }
+
+  /* Save toast */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #28a745; color: white;
+    padding: 12px 26px; border-radius: 50px; font-size: 15px;
+    opacity: 0; pointer-events: none; z-index: 100;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="index.html">← Home</a>
+  <h1>🎨 Coloring Book</h1>
+</div>
+
+<div class="scene-bar">
+  <span>Pick a picture:</span>
+  <button class="scene-btn active" onclick="loadScene(0, this)">🌟 Star</button>
+  <button class="scene-btn" onclick="loadScene(1, this)">🐱 Cat</button>
+  <button class="scene-btn" onclick="loadScene(2, this)">🦋 Butterfly</button>
+  <button class="scene-btn" onclick="loadScene(3, this)">🌻 Flower</button>
+  <button class="scene-btn" onclick="loadScene(4, this)">🏠 House</button>
+</div>
+
+<div class="main">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-label">Tool</div>
+    <div class="tool-group">
+      <button class="tool-btn active" id="tool-brush" onclick="setTool('brush')">
+        <span class="icon">✏️</span><span class="label">Draw</span>
+      </button>
+      <button class="tool-btn" id="tool-fill" onclick="setTool('fill')">
+        <span class="icon">🪣</span><span class="label">Fill</span>
+      </button>
+      <button class="tool-btn" id="tool-eraser" onclick="setTool('eraser')">
+        <span class="icon">🧹</span><span class="label">Erase</span>
+      </button>
+    </div>
+
+    <div class="sidebar-label">Size</div>
+    <div class="size-group">
+      <div class="size-ring active" data-s="4"  onclick="setSize(4,this)">
+        <div class="size-dot" style="width:6px;height:6px;"></div>
+      </div>
+      <div class="size-ring" data-s="11" onclick="setSize(11,this)">
+        <div class="size-dot" style="width:13px;height:13px;"></div>
+      </div>
+      <div class="size-ring" data-s="22" onclick="setSize(22,this)">
+        <div class="size-dot" style="width:22px;height:22px;"></div>
+      </div>
+    </div>
+
+    <div class="sidebar-label">Color</div>
+    <div class="current-color-wrap">
+      <div class="current-color" id="currentColorDot"></div>
+      <div class="current-color-label">Selected</div>
+    </div>
+    <div class="palette" id="palette"></div>
+
+    <div class="sidebar-label">Actions</div>
+    <div class="action-group">
+      <button class="action-btn" onclick="saveImage()">
+        <span class="icon">💾</span>Save
+      </button>
+      <button class="action-btn red" onclick="clearColors()">
+        <span class="icon">🗑️</span>Clear
+      </button>
+    </div>
+  </div>
+
+  <!-- Canvas Area -->
+  <div class="canvas-area">
+    <div class="page-wrap" id="pageWrap">
+      <!-- User draws colors here -->
+      <canvas id="colorCanvas" width="560" height="460"></canvas>
+      <!-- SVG line art overlay — black lines show over the colors -->
+      <img id="lineArt" alt="line art"/>
+      <!-- Hidden: used only for flood-fill boundary detection -->
+      <canvas id="outlineCanvas" width="560" height="460"></canvas>
+      <!-- Loading indicator -->
+      <div class="loading" id="loading">⏳</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">✅ Saved to Downloads!</div>
+
+<script>
+// ─── CANVAS SETUP ─────────────────────────────────────────────────────────────
+const CW = 560, CH = 460;
+const colorCanvas   = document.getElementById('colorCanvas');
+const outlineCanvas = document.getElementById('outlineCanvas');
+const lineArtImg    = document.getElementById('lineArt');
+const colorCtx      = colorCanvas.getContext('2d', { willReadFrequently: true });
+const outlineCtx    = outlineCanvas.getContext('2d', { willReadFrequently: true });
+
+colorCanvas.style.width  = CW + 'px';
+colorCanvas.style.height = CH + 'px';
+document.getElementById('pageWrap').style.width  = CW + 'px';
+document.getElementById('pageWrap').style.height = CH + 'px';
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let tool        = 'brush';
+let brushSize   = 4;
+let curColor    = [255, 200, 0]; // default gold
+let painting    = false;
+let lastX = 0, lastY = 0;
+
+// ─── PALETTE ─────────────────────────────────────────────────────────────────
+const COLORS = [
+  [255, 80,  80 ], [255,160,  50], [255,215,  0 ], [140,210,  70],
+  [50, 190, 100 ], [40, 200, 220], [50, 120, 255], [150, 80, 255],
+  [240, 80, 200 ], [255,150, 180], [255,220, 150], [180,230, 255],
+  [255,255, 255 ], [200,200, 200], [120, 80,  40], [30,  20,  60],
+  [255,140,   0 ], [0,  170, 130], [200, 0,  100], [80, 160, 255],
+];
+
+const palette = document.getElementById('palette');
+COLORS.forEach((c, i) => {
+  const sw = document.createElement('div');
+  sw.className = 'swatch' + (i === 2 ? ' active' : '');
+  sw.style.background = `rgb(${c[0]},${c[1]},${c[2]})`;
+  sw.onclick = () => {
+    document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+    sw.classList.add('active');
+    curColor = c;
+    updateColorDot();
+    if (tool === 'eraser') setTool('brush');
+  };
+  palette.appendChild(sw);
+});
+
+function updateColorDot() {
+  document.getElementById('currentColorDot').style.background =
+    `rgb(${curColor[0]},${curColor[1]},${curColor[2]})`;
+}
+updateColorDot();
+
+// ─── TOOLS ────────────────────────────────────────────────────────────────────
+function setTool(t) {
+  tool = t;
+  document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tool-' + t).classList.add('active');
+  colorCanvas.style.cursor = t === 'fill' ? 'cell' : 'crosshair';
+}
+
+function setSize(s, el) {
+  brushSize = s;
+  document.querySelectorAll('.size-ring').forEach(r => r.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ─── POINTER HELPERS ─────────────────────────────────────────────────────────
+function getPos(e) {
+  const rect = colorCanvas.getBoundingClientRect();
+  const src  = e.touches ? e.touches[0] : e;
+  return [
+    Math.round((src.clientX - rect.left) * (CW / rect.width)),
+    Math.round((src.clientY - rect.top)  * (CH / rect.height))
+  ];
+}
+
+// ─── DRAW (brush/eraser) ─────────────────────────────────────────────────────
+function drawLine(x1, y1, x2, y2) {
+  colorCtx.lineCap  = 'round';
+  colorCtx.lineJoin = 'round';
+
+  if (tool === 'eraser') {
+    colorCtx.globalCompositeOperation = 'destination-out';
+    colorCtx.strokeStyle = 'rgba(0,0,0,1)';
+    colorCtx.lineWidth   = brushSize * 3.5;
+  } else {
+    colorCtx.globalCompositeOperation = 'source-over';
+    colorCtx.strokeStyle = `rgb(${curColor[0]},${curColor[1]},${curColor[2]})`;
+    colorCtx.lineWidth   = brushSize * 2;
+  }
+  colorCtx.beginPath();
+  colorCtx.moveTo(x1, y1);
+  colorCtx.lineTo(x2, y2);
+  colorCtx.stroke();
+  colorCtx.globalCompositeOperation = 'source-over';
+}
+
+// Mouse events
+colorCanvas.addEventListener('mousedown', e => {
+  const [x, y] = getPos(e);
+  if (tool === 'fill') { floodFill(x, y); return; }
+  painting = true; lastX = x; lastY = y;
+  drawLine(x, y, x, y);
+});
+colorCanvas.addEventListener('mousemove', e => {
+  if (!painting) return;
+  const [x, y] = getPos(e);
+  drawLine(lastX, lastY, x, y);
+  lastX = x; lastY = y;
+});
+colorCanvas.addEventListener('mouseup',    () => { painting = false; });
+colorCanvas.addEventListener('mouseleave', () => { painting = false; });
+
+// Touch events
+colorCanvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  const [x, y] = getPos(e);
+  if (tool === 'fill') { floodFill(x, y); return; }
+  painting = true; lastX = x; lastY = y;
+  drawLine(x, y, x, y);
+}, { passive: false });
+colorCanvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if (!painting) return;
+  const [x, y] = getPos(e);
+  drawLine(lastX, lastY, x, y);
+  lastX = x; lastY = y;
+}, { passive: false });
+colorCanvas.addEventListener('touchend', () => { painting = false; });
+
+// ─── FLOOD FILL ───────────────────────────────────────────────────────────────
+// outlineCanvas has the SVG rendered (white bg + dark strokes).
+// We treat dark pixels as boundaries.
+
+function isBoundary(r, g, b, a) {
+  // A "line" pixel: has good opacity and is dark
+  return a > 120 && (r + g + b) < 180;
+}
+
+function floodFill(x0, y0) {
+  x0 = Math.max(0, Math.min(CW - 1, x0));
+  y0 = Math.max(0, Math.min(CH - 1, y0));
+
+  const outData  = outlineCtx.getImageData(0, 0, CW, CH).data;
+  const imgData  = colorCtx.getImageData(0, 0, CW, CH);
+  const data     = imgData.data;
+
+  const oi = (y0 * CW + x0) * 4;
+  // Don't fill if we clicked directly on a boundary stroke
+  if (isBoundary(outData[oi], outData[oi+1], outData[oi+2], outData[oi+3])) return;
+
+  // Target color on colorCanvas at clicked pixel
+  const ci = oi;
+  const tR = data[ci], tG = data[ci+1], tB = data[ci+2], tA = data[ci+3];
+  const [fR, fG, fB] = curColor;
+
+  // Already the fill color
+  if (tA > 200 && tR === fR && tG === fG && tB === fB) return;
+
+  const visited = new Uint8Array(CW * CH);
+  const stack   = [(y0 * CW + x0)];
+
+  while (stack.length) {
+    const i = stack.pop();
+    if (visited[i]) continue;
+    visited[i] = 1;
+
+    const p = i * 4;
+
+    // Stop at outline boundaries
+    if (isBoundary(outData[p], outData[p+1], outData[p+2], outData[p+3])) continue;
+
+    // Color match on colorCanvas: accept transparent pixels OR pixels close to target
+    const cA = data[p + 3];
+    if (cA > 30) {
+      const dr = data[p] - tR, dg = data[p+1] - tG, db = data[p+2] - tB;
+      if (dr*dr + dg*dg + db*db > 55*55*3) continue;
+    }
+
+    data[p]   = fR;
+    data[p+1] = fG;
+    data[p+2] = fB;
+    data[p+3] = 220; // slightly transparent so line art multiply layer blends in
+
+    const x = i % CW, y = (i / CW) | 0;
+    if (x > 0)      stack.push(i - 1);
+    if (x < CW - 1) stack.push(i + 1);
+    if (y > 0)      stack.push(i - CW);
+    if (y < CH - 1) stack.push(i + CW);
+  }
+
+  colorCtx.putImageData(imgData, 0, 0);
+}
+
+// ─── CLEAR & SAVE ─────────────────────────────────────────────────────────────
+function clearColors() {
+  colorCtx.clearRect(0, 0, CW, CH);
+}
+
+function saveImage() {
+  const merged = document.createElement('canvas');
+  merged.width = CW; merged.height = CH;
+  const mCtx = merged.getContext('2d');
+  mCtx.fillStyle = 'white';
+  mCtx.fillRect(0, 0, CW, CH);
+  mCtx.drawImage(colorCanvas, 0, 0);
+  mCtx.drawImage(outlineCanvas, 0, 0);
+
+  const a = document.createElement('a');
+  a.download = 'my-coloring.png';
+  a.href = merged.toDataURL();
+  a.click();
+
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ─── SVG SCENES ───────────────────────────────────────────────────────────────
+// Each SVG: white background + black strokes only (no colored fills)
+// mix-blend-mode:multiply on the <img> makes white transparent → lines show over colors
+const W = 560, H = 460;
+
+const scenes = [
+
+// ── 0: HAPPY STAR ─────────────────────────────────────────────────────────────
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 460">
+  <rect width="560" height="460" fill="white"/>
+
+  <!-- big star body -->
+  <polygon points="280,58 318,174 432,174 340,244 373,360 280,290 187,360 220,244 128,174 242,174"
+    fill="white" stroke="#1a1030" stroke-width="6" stroke-linejoin="round"/>
+
+  <!-- left eye outer -->
+  <circle cx="246" cy="200" r="22" fill="white" stroke="#1a1030" stroke-width="4.5"/>
+  <!-- left pupil -->
+  <circle cx="246" cy="200" r="10" fill="white" stroke="#1a1030" stroke-width="3.5"/>
+  <!-- left eye shine -->
+  <circle cx="240" cy="194" r="4" fill="white" stroke="#1a1030" stroke-width="2"/>
+
+  <!-- right eye outer -->
+  <circle cx="314" cy="200" r="22" fill="white" stroke="#1a1030" stroke-width="4.5"/>
+  <!-- right pupil -->
+  <circle cx="314" cy="200" r="10" fill="white" stroke="#1a1030" stroke-width="3.5"/>
+  <!-- right eye shine -->
+  <circle cx="308" cy="194" r="4" fill="white" stroke="#1a1030" stroke-width="2"/>
+
+  <!-- smile -->
+  <path d="M 251 232 Q 280 262 309 232"
+    fill="none" stroke="#1a1030" stroke-width="4.5" stroke-linecap="round"/>
+
+  <!-- cheeks (dashed oval) -->
+  <ellipse cx="220" cy="224" rx="18" ry="11"
+    fill="none" stroke="#1a1030" stroke-width="2.5" stroke-dasharray="4,4"/>
+  <ellipse cx="340" cy="224" rx="18" ry="11"
+    fill="none" stroke="#1a1030" stroke-width="2.5" stroke-dasharray="4,4"/>
+
+  <!-- decorative mini stars at corners -->
+  <!-- top-left -->
+  <polygon points="72,56 78,74 96,74 82,85 87,103 72,92 57,103 62,85 48,74 66,74"
+    fill="white" stroke="#1a1030" stroke-width="3" stroke-linejoin="round"/>
+  <!-- top-right -->
+  <polygon points="488,56 494,74 512,74 498,85 503,103 488,92 473,103 478,85 464,74 482,74"
+    fill="white" stroke="#1a1030" stroke-width="3" stroke-linejoin="round"/>
+  <!-- bottom-left -->
+  <polygon points="72,370 78,388 96,388 82,399 87,417 72,406 57,417 62,399 48,388 66,388"
+    fill="white" stroke="#1a1030" stroke-width="3" stroke-linejoin="round"/>
+  <!-- bottom-right -->
+  <polygon points="488,370 494,388 512,388 498,399 503,417 488,406 473,417 478,399 464,388 482,388"
+    fill="white" stroke="#1a1030" stroke-width="3" stroke-linejoin="round"/>
+  <!-- top-center sparkle -->
+  <line x1="280" y1="22" x2="280" y2="38" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="272" y1="26" x2="288" y2="34" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="272" y1="34" x2="288" y2="26" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- swirly clouds bottom -->
+  <path d="M 60 420 Q 80 402 100 416 Q 116 402 136 416 Q 152 402 168 416"
+    fill="none" stroke="#1a1030" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 392 420 Q 412 402 432 416 Q 448 402 468 416 Q 484 402 500 416"
+    fill="none" stroke="#1a1030" stroke-width="3" stroke-linecap="round"/>
+</svg>`,
+
+// ── 1: CAT ────────────────────────────────────────────────────────────────────
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 460">
+  <rect width="560" height="460" fill="white"/>
+
+  <!-- body -->
+  <ellipse cx="280" cy="320" rx="105" ry="115"
+    fill="white" stroke="#1a1030" stroke-width="5.5"/>
+
+  <!-- head -->
+  <circle cx="280" cy="175" r="96"
+    fill="white" stroke="#1a1030" stroke-width="5.5"/>
+
+  <!-- left ear -->
+  <polygon points="168,114 192,52 238,108"
+    fill="white" stroke="#1a1030" stroke-width="5" stroke-linejoin="round"/>
+  <!-- left inner ear -->
+  <polygon points="180,110 198,66 226,110"
+    fill="white" stroke="#1a1030" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- right ear -->
+  <polygon points="392,114 368,52 322,108"
+    fill="white" stroke="#1a1030" stroke-width="5" stroke-linejoin="round"/>
+  <!-- right inner ear -->
+  <polygon points="380,110 362,66 334,110"
+    fill="white" stroke="#1a1030" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- left eye -->
+  <ellipse cx="245" cy="167" rx="22" ry="25"
+    fill="white" stroke="#1a1030" stroke-width="4.5"/>
+  <!-- left pupil (vertical) -->
+  <ellipse cx="245" cy="167" rx="9"  ry="18"
+    fill="white" stroke="#1a1030" stroke-width="3.5"/>
+  <!-- left shine -->
+  <circle cx="239" cy="160" r="4.5" fill="white" stroke="#1a1030" stroke-width="2"/>
+
+  <!-- right eye -->
+  <ellipse cx="315" cy="167" rx="22" ry="25"
+    fill="white" stroke="#1a1030" stroke-width="4.5"/>
+  <!-- right pupil -->
+  <ellipse cx="315" cy="167" rx="9"  ry="18"
+    fill="white" stroke="#1a1030" stroke-width="3.5"/>
+  <!-- right shine -->
+  <circle cx="309" cy="160" r="4.5" fill="white" stroke="#1a1030" stroke-width="2"/>
+
+  <!-- nose (heart-ish triangle) -->
+  <path d="M 268 202 Q 280 196 292 202 L 280 218 Z"
+    fill="white" stroke="#1a1030" stroke-width="4" stroke-linejoin="round"/>
+
+  <!-- mouth -->
+  <path d="M 280 218 C 266 232 248 234 242 226"
+    fill="none" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M 280 218 C 294 232 312 234 318 226"
+    fill="none" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- whiskers left -->
+  <line x1="216" y1="202" x2="144" y2="194" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="216" y1="210" x2="140" y2="210" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="216" y1="218" x2="144" y2="226" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- whiskers right -->
+  <line x1="344" y1="202" x2="416" y2="194" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="344" y1="210" x2="420" y2="210" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="344" y1="218" x2="416" y2="226" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- collar -->
+  <path d="M 196 258 Q 280 276 364 258"
+    fill="none" stroke="#1a1030" stroke-width="5" stroke-linecap="round"/>
+  <!-- collar bell -->
+  <circle cx="280" cy="275" r="10" fill="white" stroke="#1a1030" stroke-width="3.5"/>
+  <line x1="277" y1="280" x2="283" y2="280" stroke="#1a1030" stroke-width="2"/>
+
+  <!-- front paws -->
+  <ellipse cx="226" cy="422" rx="38" ry="24"
+    fill="white" stroke="#1a1030" stroke-width="4.5"/>
+  <ellipse cx="334" cy="422" rx="38" ry="24"
+    fill="white" stroke="#1a1030" stroke-width="4.5"/>
+  <!-- paw toe lines -->
+  <line x1="210" y1="412" x2="210" y2="424" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="226" y1="409" x2="226" y2="421" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="242" y1="412" x2="242" y2="424" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="318" y1="412" x2="318" y2="424" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="334" y1="409" x2="334" y2="421" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="350" y1="412" x2="350" y2="424" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- tail -->
+  <path d="M 382 400 C 460 380 500 310 460 260 C 430 224 400 250 420 278"
+    fill="none" stroke="#1a1030" stroke-width="5.5" stroke-linecap="round"/>
+
+  <!-- belly stripe detail -->
+  <path d="M 246 300 Q 280 330 314 300"
+    fill="none" stroke="#1a1030" stroke-width="3" stroke-linecap="round" stroke-dasharray="6,5"/>
+
+  <!-- forehead marking -->
+  <path d="M 262 128 Q 280 118 298 128"
+    fill="none" stroke="#1a1030" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 268 115 Q 280 106 292 115"
+    fill="none" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+</svg>`,
+
+// ── 2: BUTTERFLY ──────────────────────────────────────────────────────────────
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 460">
+  <rect width="560" height="460" fill="white"/>
+
+  <!-- Body -->
+  <ellipse cx="280" cy="240" rx="14" ry="82"
+    fill="white" stroke="#1a1030" stroke-width="5"/>
+  <!-- Head -->
+  <circle cx="280" cy="148" r="22"
+    fill="white" stroke="#1a1030" stroke-width="4.5"/>
+  <!-- Eyes -->
+  <circle cx="271" cy="144" r="6" fill="white" stroke="#1a1030" stroke-width="3"/>
+  <circle cx="289" cy="144" r="6" fill="white" stroke="#1a1030" stroke-width="3"/>
+
+  <!-- Antennae -->
+  <path d="M 273 128 C 250 90 210 76 200 58"
+    fill="none" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="200" cy="56" r="7" fill="white" stroke="#1a1030" stroke-width="3"/>
+  <path d="M 287 128 C 310 90 350 76 360 58"
+    fill="none" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="360" cy="56" r="7" fill="white" stroke="#1a1030" stroke-width="3"/>
+
+  <!-- Upper-left wing -->
+  <path d="M 268 170 C 210 130 90 120 70 190 C 50 255 110 310 200 290 C 240 280 268 248 268 220 Z"
+    fill="white" stroke="#1a1030" stroke-width="5" stroke-linejoin="round"/>
+  <!-- Upper-left wing inner ring 1 -->
+  <path d="M 264 196 C 222 172 130 166 116 214 C 104 256 148 294 204 278 C 238 268 260 240 260 218 Z"
+    fill="none" stroke="#1a1030" stroke-width="2.5"/>
+  <!-- Upper-left wing inner ring 2 -->
+  <circle cx="172" cy="218" r="28" fill="none" stroke="#1a1030" stroke-width="2.5"/>
+  <circle cx="172" cy="218" r="12" fill="none" stroke="#1a1030" stroke-width="2"/>
+
+  <!-- Upper-right wing -->
+  <path d="M 292 170 C 350 130 470 120 490 190 C 510 255 450 310 360 290 C 320 280 292 248 292 220 Z"
+    fill="white" stroke="#1a1030" stroke-width="5" stroke-linejoin="round"/>
+  <!-- Upper-right wing inner ring 1 -->
+  <path d="M 296 196 C 338 172 430 166 444 214 C 456 256 412 294 356 278 C 322 268 300 240 300 218 Z"
+    fill="none" stroke="#1a1030" stroke-width="2.5"/>
+  <!-- Upper-right wing inner ring 2 -->
+  <circle cx="388" cy="218" r="28" fill="none" stroke="#1a1030" stroke-width="2.5"/>
+  <circle cx="388" cy="218" r="12" fill="none" stroke="#1a1030" stroke-width="2"/>
+
+  <!-- Lower-left wing -->
+  <path d="M 266 248 C 220 260 130 290 120 350 C 110 400 158 430 210 410 C 250 394 270 350 272 300 Z"
+    fill="white" stroke="#1a1030" stroke-width="5" stroke-linejoin="round"/>
+  <!-- Lower-left wing detail -->
+  <path d="M 264 268 C 228 280 160 302 152 348 C 144 388 178 410 208 398"
+    fill="none" stroke="#1a1030" stroke-width="2.5"/>
+  <circle cx="186" cy="344" r="18" fill="none" stroke="#1a1030" stroke-width="2.5"/>
+
+  <!-- Lower-right wing -->
+  <path d="M 294 248 C 340 260 430 290 440 350 C 450 400 402 430 350 410 C 310 394 290 350 288 300 Z"
+    fill="white" stroke="#1a1030" stroke-width="5" stroke-linejoin="round"/>
+  <!-- Lower-right wing detail -->
+  <path d="M 296 268 C 332 280 400 302 408 348 C 416 388 382 410 352 398"
+    fill="none" stroke="#1a1030" stroke-width="2.5"/>
+  <circle cx="374" cy="344" r="18" fill="none" stroke="#1a1030" stroke-width="2.5"/>
+
+  <!-- Wing vein lines -->
+  <line x1="268" y1="188" x2="180" y2="148" stroke="#1a1030" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="268" y1="210" x2="130" y2="220" stroke="#1a1030" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="292" y1="188" x2="380" y2="148" stroke="#1a1030" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="292" y1="210" x2="430" y2="220" stroke="#1a1030" stroke-width="1.8" stroke-linecap="round"/>
+</svg>`,
+
+// ── 3: SUNFLOWER ──────────────────────────────────────────────────────────────
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 460">
+  <rect width="560" height="460" fill="white"/>
+
+  <!-- Ground / grass base -->
+  <path d="M 0 390 Q 140 370 280 385 Q 420 400 560 380 L 560 460 L 0 460 Z"
+    fill="white" stroke="#1a1030" stroke-width="4" stroke-linejoin="round"/>
+
+  <!-- Stem -->
+  <path d="M 280 366 C 275 320 278 280 280 230"
+    fill="none" stroke="#1a1030" stroke-width="9" stroke-linecap="round"/>
+
+  <!-- Left leaf -->
+  <path d="M 276 316 C 240 296 190 302 178 326 C 166 350 200 368 240 340 C 258 328 272 320 276 316 Z"
+    fill="white" stroke="#1a1030" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M 276 316 C 244 326 200 336 186 328"
+    fill="none" stroke="#1a1030" stroke-width="2"/>
+
+  <!-- Right leaf -->
+  <path d="M 284 278 C 320 258 370 264 382 288 C 394 312 360 330 320 302 C 302 290 286 282 284 278 Z"
+    fill="white" stroke="#1a1030" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M 284 278 C 316 288 360 298 374 290"
+    fill="none" stroke="#1a1030" stroke-width="2"/>
+
+  <!-- Petals (8 large petals) -->
+  <ellipse cx="280" cy="142" rx="28" ry="50" fill="white" stroke="#1a1030" stroke-width="4"/>
+  <ellipse cx="280" cy="142" rx="28" ry="50" fill="white" stroke="#1a1030" stroke-width="4"
+    transform="rotate(45 280 196)"/>
+  <ellipse cx="280" cy="142" rx="28" ry="50" fill="white" stroke="#1a1030" stroke-width="4"
+    transform="rotate(90 280 196)"/>
+  <ellipse cx="280" cy="142" rx="28" ry="50" fill="white" stroke="#1a1030" stroke-width="4"
+    transform="rotate(135 280 196)"/>
+  <ellipse cx="280" cy="142" rx="28" ry="50" fill="white" stroke="#1a1030" stroke-width="4"
+    transform="rotate(180 280 196)"/>
+  <ellipse cx="280" cy="142" rx="28" ry="50" fill="white" stroke="#1a1030" stroke-width="4"
+    transform="rotate(225 280 196)"/>
+  <ellipse cx="280" cy="142" rx="28" ry="50" fill="white" stroke="#1a1030" stroke-width="4"
+    transform="rotate(270 280 196)"/>
+  <ellipse cx="280" cy="142" rx="28" ry="50" fill="white" stroke="#1a1030" stroke-width="4"
+    transform="rotate(315 280 196)"/>
+
+  <!-- Flower center (outer) -->
+  <circle cx="280" cy="196" r="50" fill="white" stroke="#1a1030" stroke-width="5"/>
+  <!-- Flower center (inner) -->
+  <circle cx="280" cy="196" r="34" fill="white" stroke="#1a1030" stroke-width="3.5"/>
+  <!-- Seed pattern dots -->
+  <circle cx="280" cy="184" r="5" fill="white" stroke="#1a1030" stroke-width="2.5"/>
+  <circle cx="292" cy="190" r="5" fill="white" stroke="#1a1030" stroke-width="2.5"/>
+  <circle cx="294" cy="204" r="5" fill="white" stroke="#1a1030" stroke-width="2.5"/>
+  <circle cx="280" cy="210" r="5" fill="white" stroke="#1a1030" stroke-width="2.5"/>
+  <circle cx="266" cy="204" r="5" fill="white" stroke="#1a1030" stroke-width="2.5"/>
+  <circle cx="266" cy="190" r="5" fill="white" stroke="#1a1030" stroke-width="2.5"/>
+
+  <!-- Grass blades -->
+  <path d="M 80 386 C 72 360 76 340 68 316" fill="none" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M 96 390 C 104 364 100 342 112 318" fill="none" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M 440 382 C 432 356 436 336 428 312" fill="none" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M 460 388 C 468 362 464 340 476 316" fill="none" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M 160 392 C 154 374 158 358 148 340" fill="none" stroke="#1a1030" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 400 388 C 408 370 404 354 414 336" fill="none" stroke="#1a1030" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Sun (top right) -->
+  <circle cx="478" cy="66" r="36" fill="white" stroke="#1a1030" stroke-width="4.5"/>
+  <!-- Sun rays -->
+  <line x1="478" y1="20" x2="478" y2="10" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="510" y1="34" x2="518" y2="26" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="524" y1="66" x2="534" y2="66" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="510" y1="98" x2="518" y2="106" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="446" y1="34" x2="438" y2="26" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="432" y1="66" x2="422" y2="66" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="446" y1="98" x2="438" y2="106" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Sun face -->
+  <circle cx="468" cy="60" r="5" fill="white" stroke="#1a1030" stroke-width="2.5"/>
+  <circle cx="488" cy="60" r="5" fill="white" stroke="#1a1030" stroke-width="2.5"/>
+  <path d="M 464 76 Q 478 84 492 76" fill="none" stroke="#1a1030" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Cloud (top left) -->
+  <path d="M 38 80 Q 48 60 68 68 Q 78 48 100 58 Q 120 44 138 60 Q 156 50 166 66 Q 174 84 158 92 Q 148 100 130 96 Q 110 106 88 98 Q 66 106 52 96 Q 30 92 38 80 Z"
+    fill="white" stroke="#1a1030" stroke-width="4" stroke-linejoin="round"/>
+
+  <!-- Small butterfly (decorative) -->
+  <path d="M 142 260 C 126 248 106 254 108 270 C 110 282 132 284 142 272 Z"
+    fill="white" stroke="#1a1030" stroke-width="2.5"/>
+  <path d="M 148 260 C 164 248 184 254 182 270 C 180 282 158 284 148 272 Z"
+    fill="white" stroke="#1a1030" stroke-width="2.5"/>
+  <ellipse cx="145" cy="266" rx="5" ry="10" fill="white" stroke="#1a1030" stroke-width="2.5"/>
+</svg>`,
+
+// ── 4: HOUSE ──────────────────────────────────────────────────────────────────
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 460">
+  <rect width="560" height="460" fill="white"/>
+
+  <!-- Ground -->
+  <path d="M 0 390 Q 280 375 560 390 L 560 460 L 0 460 Z"
+    fill="white" stroke="#1a1030" stroke-width="4"/>
+
+  <!-- House walls -->
+  <rect x="110" y="220" width="340" height="190"
+    fill="white" stroke="#1a1030" stroke-width="5.5" rx="4"/>
+
+  <!-- Roof -->
+  <path d="M 88 224 L 280 74 L 472 224 Z"
+    fill="white" stroke="#1a1030" stroke-width="5.5" stroke-linejoin="round"/>
+  <!-- Roof ridge line -->
+  <line x1="88" y1="224" x2="472" y2="224" stroke="#1a1030" stroke-width="3"/>
+
+  <!-- Chimney -->
+  <rect x="370" y="108" width="44" height="72"
+    fill="white" stroke="#1a1030" stroke-width="4.5"/>
+  <!-- Chimney top cap -->
+  <rect x="362" y="104" width="60" height="12"
+    fill="white" stroke="#1a1030" stroke-width="3.5"/>
+  <!-- Smoke puffs -->
+  <circle cx="392" cy="86" r="11" fill="white" stroke="#1a1030" stroke-width="3"/>
+  <circle cx="404" cy="70" r="14" fill="white" stroke="#1a1030" stroke-width="3"/>
+  <circle cx="392" cy="52" r="17" fill="white" stroke="#1a1030" stroke-width="3"/>
+
+  <!-- Front door -->
+  <path d="M 244 410 L 244 312 Q 244 290 280 290 Q 316 290 316 312 L 316 410 Z"
+    fill="white" stroke="#1a1030" stroke-width="4.5"/>
+  <!-- Door window small -->
+  <circle cx="280" cy="320" r="14" fill="white" stroke="#1a1030" stroke-width="3"/>
+  <!-- Door knob -->
+  <circle cx="304" cy="362" r="6" fill="white" stroke="#1a1030" stroke-width="3"/>
+  <!-- Door panel lines -->
+  <line x1="244" y1="340" x2="316" y2="340" stroke="#1a1030" stroke-width="2.5"/>
+
+  <!-- Left window -->
+  <rect x="130" y="254" width="88" height="72" rx="4"
+    fill="white" stroke="#1a1030" stroke-width="4.5"/>
+  <!-- Window cross -->
+  <line x1="174" y1="254" x2="174" y2="326" stroke="#1a1030" stroke-width="3"/>
+  <line x1="130" y1="290" x2="218" y2="290" stroke="#1a1030" stroke-width="3"/>
+  <!-- Window sill -->
+  <rect x="122" y="323" width="104" height="10" rx="3"
+    fill="white" stroke="#1a1030" stroke-width="3"/>
+  <!-- Flower pot on sill -->
+  <rect x="157" y="314" width="34" height="18" rx="3"
+    fill="white" stroke="#1a1030" stroke-width="3"/>
+  <path d="M 162 314 C 162 298 178 292 178 292 C 178 292 194 298 194 314"
+    fill="none" stroke="#1a1030" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="178" cy="290" r="8" fill="white" stroke="#1a1030" stroke-width="2.5"/>
+
+  <!-- Right window -->
+  <rect x="342" y="254" width="88" height="72" rx="4"
+    fill="white" stroke="#1a1030" stroke-width="4.5"/>
+  <line x1="386" y1="254" x2="386" y2="326" stroke="#1a1030" stroke-width="3"/>
+  <line x1="342" y1="290" x2="430" y2="290" stroke="#1a1030" stroke-width="3"/>
+  <rect x="334" y="323" width="104" height="10" rx="3"
+    fill="white" stroke="#1a1030" stroke-width="3"/>
+
+  <!-- Walkway (dashed) -->
+  <rect x="252" y="400" width="56" height="60"
+    fill="none" stroke="#1a1030" stroke-width="3" stroke-dasharray="10,7"/>
+
+  <!-- Left tree -->
+  <rect x="40" y="308" width="22" height="82" rx="4"
+    fill="white" stroke="#1a1030" stroke-width="4"/>
+  <!-- Tree layers -->
+  <path d="M 14 316 L 51 240 L 88 316 Z" fill="white" stroke="#1a1030" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M 20 288 L 51 224 L 82 288 Z" fill="white" stroke="#1a1030" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M 26 262 L 51 208 L 76 262 Z" fill="white" stroke="#1a1030" stroke-width="4" stroke-linejoin="round"/>
+
+  <!-- Right tree (round) -->
+  <rect x="498" y="308" width="22" height="82" rx="4"
+    fill="white" stroke="#1a1030" stroke-width="4"/>
+  <circle cx="509" cy="272" r="52" fill="white" stroke="#1a1030" stroke-width="4.5"/>
+  <!-- Round tree inner detail -->
+  <circle cx="509" cy="272" r="36" fill="none" stroke="#1a1030" stroke-width="2.5" stroke-dasharray="6,5"/>
+
+  <!-- Grass tufts -->
+  <path d="M 165 388 C 158 366 160 350 154 334" fill="none" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M 180 390 C 188 368 184 352 192 336" fill="none" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M 380 388 C 373 366 375 350 369 334" fill="none" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M 395 390 C 403 368 399 352 407 336" fill="none" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Sun -->
+  <circle cx="66" cy="70" r="36" fill="white" stroke="#1a1030" stroke-width="4.5"/>
+  <line x1="66" y1="24" x2="66" y2="14" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="98" y1="38" x2="106" y2="30" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="112" y1="70" x2="122" y2="70" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="98" y1="102" x2="106" y2="110" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="34" y1="38" x2="26" y2="30"  stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="20" y1="70" x2="10"  y2="70" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="34" y1="102" x2="26" y2="110" stroke="#1a1030" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Sun face -->
+  <circle cx="56"  cy="64" r="5" fill="white" stroke="#1a1030" stroke-width="2.5"/>
+  <circle cx="76"  cy="64" r="5" fill="white" stroke="#1a1030" stroke-width="2.5"/>
+  <path d="M 52 80 Q 66 90 80 80" fill="none" stroke="#1a1030" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Cloud -->
+  <path d="M 380 56 Q 390 36 414 46 Q 428 28 452 40 Q 470 28 488 46 Q 510 38 516 60 Q 522 80 502 88 Q 488 96 468 90 Q 444 100 418 90 Q 396 96 382 84 Q 366 74 380 56 Z"
+    fill="white" stroke="#1a1030" stroke-width="4" stroke-linejoin="round"/>
+</svg>`
+
+]; // end scenes[]
+
+// ─── SCENE LOADING ────────────────────────────────────────────────────────────
+function loadScene(idx, btn) {
+  // Update active button
+  document.querySelectorAll('.scene-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  // Clear user colors
+  colorCtx.clearRect(0, 0, CW, CH);
+
+  const loading = document.getElementById('loading');
+  loading.classList.add('show');
+
+  const svgBlob = new Blob([scenes[idx]], { type: 'image/svg+xml;charset=utf-8' });
+  const url     = URL.createObjectURL(svgBlob);
+
+  const img = new Image();
+  img.onload = () => {
+    // 1. Render to hidden outlineCanvas (used for flood-fill boundary detection)
+    outlineCtx.clearRect(0, 0, CW, CH);
+    outlineCtx.drawImage(img, 0, 0, CW, CH);
+
+    // 2. Set visible overlay (mix-blend-mode:multiply makes white→transparent)
+    lineArtImg.src = url;
+    lineArtImg.onload = () => URL.revokeObjectURL(url);
+
+    loading.classList.remove('show');
+  };
+  img.onerror = () => { loading.classList.remove('show'); };
+  img.src = url;
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+loadScene(0, document.querySelector('.scene-btn.active'));
+</script>
+</body>
+</html>

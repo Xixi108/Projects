@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catch the Happy Stars ⭐</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1a0a2e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+    overflow: hidden;
+  }
+  #gameWrapper {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 40px #ff69b4aa, 0 0 80px #9b59b650;
+  }
+  canvas { display: block; }
+  #startScreen, #gameOverScreen {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 3, 20, 0.88);
+    color: white;
+    text-align: center;
+    border-radius: 20px;
+    z-index: 10;
+  }
+  #gameOverScreen { display: none; }
+  .screen-title {
+    font-size: 38px;
+    color: #ff69b4;
+    text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff69b480;
+    margin-bottom: 12px;
+    animation: pulse 1.5s infinite alternate;
+  }
+  .screen-sub {
+    font-size: 16px;
+    color: #e8c8ff;
+    margin-bottom: 6px;
+  }
+  .screen-sub-small {
+    font-size: 13px;
+    color: #b89fd4;
+    margin-bottom: 24px;
+  }
+  .play-btn {
+    background: linear-gradient(135deg, #ff69b4, #c261d4);
+    color: white;
+    border: none;
+    padding: 14px 40px;
+    font-size: 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 4px 20px #ff69b480;
+    transition: transform 0.1s, box-shadow 0.1s;
+    margin-top: 8px;
+  }
+  .play-btn:hover { transform: scale(1.07); box-shadow: 0 6px 30px #ff69b4aa; }
+  .play-btn:active { transform: scale(0.97); }
+  #finalScore {
+    font-size: 52px;
+    color: #ffd700;
+    text-shadow: 0 0 20px #ffd700;
+    margin: 8px 0;
+  }
+  @keyframes pulse {
+    from { transform: scale(1); }
+    to   { transform: scale(1.04); }
+  }
+  .instructions {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 20px;
+  }
+  .instruction-item {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,105,180,0.3);
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: #e8c8ff;
+    text-align: center;
+  }
+  .instruction-item span { display: block; font-size: 22px; margin-bottom: 4px; }
+  .home-btn {
+    position: absolute;
+    top: 14px; left: 14px;
+    text-decoration: none;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,105,180,0.4);
+    color: #e8c8ff;
+    font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    transition: background 0.2s;
+    z-index: 20;
+  }
+  .home-btn:hover { background: rgba(255,105,180,0.25); }
+  #stopBtn {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: rgba(220,50,50,0.75);
+    border: 1px solid rgba(255,100,100,0.6);
+    color: white;
+    font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: none;
+    z-index: 20;
+    transition: background 0.2s;
+  }
+  #stopBtn:hover { background: rgba(220,50,50,1); }
+</style>
+</head>
+<body>
+<div id="gameWrapper">
+  <canvas id="gameCanvas"></canvas>
+  <button id="stopBtn" onclick="stopGame()">■ Stop</button>
+
+  <!-- START SCREEN -->
+  <div id="startScreen">
+    <a class="home-btn" href="index.html">← Home</a>
+    <div class="screen-title">⭐ Happy Stars ⭐</div>
+    <div class="screen-sub">Catch the falling stars!</div>
+    <div class="screen-sub-small">Avoid the dark bombs 💣</div>
+    <div class="instructions">
+      <div class="instruction-item"><span>⬅ ➡</span>Move</div>
+      <div class="instruction-item"><span>⭐</span>+1 point</div>
+      <div class="instruction-item"><span>💣</span>Lose life</div>
+    </div>
+    <button class="play-btn" onclick="startGame()">Play! ✨</button>
+  </div>
+
+  <!-- GAME OVER SCREEN -->
+  <div id="gameOverScreen">
+    <a class="home-btn" href="index.html">← Home</a>
+    <div class="screen-title">Game Over 💀</div>
+    <div class="screen-sub">Your score:</div>
+    <div id="finalScore">0</div>
+    <div id="highScoreMsg" class="screen-sub" style="color:#ffd700; margin-bottom:16px;"></div>
+    <button class="play-btn" onclick="startGame()">Try Again! ⭐</button>
+  </div>
+</div>
+
+<script>
+// ─── CANVAS SETUP ────────────────────────────────────────────────────────────
+const canvas = document.getElementById('gameCanvas');
+const ctx    = canvas.getContext('2d');
+
+const W = 480, H = 640;
+canvas.width  = W;
+canvas.height = H;
+document.getElementById('gameWrapper').style.width  = W + 'px';
+document.getElementById('gameWrapper').style.height = H + 'px';
+
+// ─── AUDIO ───────────────────────────────────────────────────────────────────
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playTone(freq, type, duration, vol = 0.3, delay = 0) {
+  const osc  = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, audioCtx.currentTime + delay);
+  gain.gain.setValueAtTime(vol, audioCtx.currentTime + delay);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + delay + duration);
+  osc.start(audioCtx.currentTime + delay);
+  osc.stop(audioCtx.currentTime + delay + duration + 0.01);
+}
+
+function popSound() {
+  playTone(880, 'sine', 0.08, 0.25);
+  playTone(1200, 'sine', 0.12, 0.2, 0.04);
+}
+
+function bombSound() {
+  playTone(120, 'sawtooth', 0.18, 0.3);
+  playTone(80,  'square',   0.2,  0.25, 0.05);
+}
+
+function gameOverSound() {
+  [400, 320, 240, 180].forEach((f, i) => playTone(f, 'sine', 0.18, 0.25, i * 0.13));
+}
+
+// ─── BACKGROUND MUSIC ────────────────────────────────────────────────────────
+let musicInterval = null;
+const melody = [523, 587, 659, 698, 784, 880, 784, 698,
+                659, 587, 523, 494, 440, 494, 523, 523];
+let melodyIdx = 0;
+
+function startMusic() {
+  if (musicInterval) return;
+  musicInterval = setInterval(() => {
+    playTone(melody[melodyIdx % melody.length], 'sine', 0.28, 0.07);
+    melodyIdx++;
+  }, 340);
+}
+
+function stopMusic() {
+  clearInterval(musicInterval);
+  musicInterval = null;
+}
+
+// ─── GAME STATE ───────────────────────────────────────────────────────────────
+let player, stars, particles, score, lives, highScore;
+let frameCount, level, spawnRate, gameRunning;
+
+function initState() {
+  player = {
+    x: W / 2, y: H - 90,
+    w: 56, h: 80,
+    speed: 5.5,
+    bounce: 0,
+    moving: false
+  };
+  stars      = [];
+  particles  = [];
+  score      = 0;
+  lives      = 3;
+  frameCount = 0;
+  level      = 1;
+  spawnRate  = 80;  // frames between spawns
+  gameRunning = true;
+}
+
+highScore = 0;
+
+// ─── INPUT ────────────────────────────────────────────────────────────────────
+const keys = {};
+window.addEventListener('keydown', e => { keys[e.key] = true; });
+window.addEventListener('keyup',   e => { keys[e.key] = false; });
+
+// ─── TOUCH SUPPORT ───────────────────────────────────────────────────────────
+let touchX = null;
+canvas.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; });
+canvas.addEventListener('touchmove',  e => {
+  const dx = e.touches[0].clientX - touchX;
+  touchX = e.touches[0].clientX;
+  player.x += dx * 1.5;
+  player.x = Math.max(player.w/2, Math.min(W - player.w/2, player.x));
+}, { passive: true });
+
+// ─── STAR FACTORY ────────────────────────────────────────────────────────────
+function spawnStar() {
+  const isBomb = (score > 5) && (Math.random() < 0.18 + level * 0.03);
+  const size   = 22 + Math.random() * 10;
+  stars.push({
+    x:    size + Math.random() * (W - size * 2),
+    y:    -size,
+    size: size,
+    speed: 2.2 + Math.random() * 1.2 + level * 0.3,
+    rot:  Math.random() * Math.PI * 2,
+    rotSpeed: (Math.random() - 0.5) * 0.08,
+    isBomb: isBomb,
+    wobble: Math.random() * Math.PI * 2,
+    wobbleSpeed: (Math.random() - 0.5) * 0.04
+  });
+}
+
+// ─── PARTICLE FACTORY ─────────────────────────────────────────────────────────
+function spawnParticles(x, y, color, count = 12) {
+  for (let i = 0; i < count; i++) {
+    const angle = (i / count) * Math.PI * 2;
+    const speed = 2 + Math.random() * 3;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 1,
+      decay: 0.04 + Math.random() * 0.03,
+      size: 4 + Math.random() * 6,
+      color
+    });
+  }
+}
+
+// ─── DRAWING: SKY BACKGROUND ─────────────────────────────────────────────────
+const bgStars = Array.from({length: 60}, () => ({
+  x: Math.random() * W,
+  y: Math.random() * H,
+  r: 0.5 + Math.random() * 1.5,
+  phase: Math.random() * Math.PI * 2
+}));
+
+function drawBackground(t) {
+  // gradient sky
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0,   '#0d0621');
+  grad.addColorStop(0.5, '#1a0a3a');
+  grad.addColorStop(1,   '#2d1250');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // twinkling bg stars
+  bgStars.forEach(s => {
+    const alpha = 0.4 + 0.6 * Math.sin(t * 0.002 + s.phase);
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,220,${alpha})`;
+    ctx.fill();
+  });
+
+  // soft ground glow
+  const groundGlow = ctx.createLinearGradient(0, H - 30, 0, H);
+  groundGlow.addColorStop(0, 'rgba(255,105,180,0)');
+  groundGlow.addColorStop(1, 'rgba(255,105,180,0.15)');
+  ctx.fillStyle = groundGlow;
+  ctx.fillRect(0, H - 30, W, 30);
+
+  // ground line
+  ctx.strokeStyle = 'rgba(255,105,180,0.35)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(0, H - 28);
+  ctx.lineTo(W, H - 28);
+  ctx.stroke();
+}
+
+// ─── DRAWING: HUD ────────────────────────────────────────────────────────────
+function drawHUD() {
+  // HUD bar background
+  ctx.fillStyle = 'rgba(10,3,20,0.65)';
+  roundRect(ctx, 8, 8, W - 16, 46, 14);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,105,180,0.3)';
+  ctx.lineWidth = 1.5;
+  roundRect(ctx, 8, 8, W - 16, 46, 14);
+  ctx.stroke();
+
+  // Score
+  ctx.fillStyle = '#ffd700';
+  ctx.font = 'bold 20px "Comic Sans MS", cursive';
+  ctx.textAlign = 'left';
+  ctx.fillText('⭐ ' + score, 22, 36);
+
+  // Level
+  ctx.fillStyle = '#c8a8ff';
+  ctx.font = '15px "Comic Sans MS", cursive';
+  ctx.textAlign = 'center';
+  ctx.fillText('LVL ' + level, W / 2, 34);
+
+  // Hearts
+  ctx.textAlign = 'right';
+  ctx.font = '22px serif';
+  for (let i = 0; i < 3; i++) {
+    ctx.globalAlpha = i < lives ? 1 : 0.2;
+    ctx.fillText('❤️', W - 22 - i * 28, 37);
+  }
+  ctx.globalAlpha = 1;
+}
+
+// ─── DRAWING: PLAYER ─────────────────────────────────────────────────────────
+function drawPlayer(p, t) {
+  const bounce = Math.sin(t * 0.004) * 3;
+  const cx = p.x;
+  const cy = p.y + bounce;
+
+  ctx.save();
+  ctx.translate(cx, cy);
+
+  // Shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.25)';
+  ctx.beginPath();
+  ctx.ellipse(0, p.h / 2 - 2, p.w * 0.45, 8, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // ── HAIR (back layer, twin tails) ────────────────────────────────────────
+  ctx.fillStyle = '#1a1a2e';
+
+  // left tail
+  ctx.beginPath();
+  ctx.moveTo(-14, -28);
+  ctx.bezierCurveTo(-30, -20, -44, 10, -38, 36);
+  ctx.bezierCurveTo(-36, 42, -26, 44, -22, 36);
+  ctx.bezierCurveTo(-20, 20, -18, -8, -14, -28);
+  ctx.fill();
+
+  // right tail
+  ctx.beginPath();
+  ctx.moveTo(14, -28);
+  ctx.bezierCurveTo(30, -20, 44, 10, 38, 36);
+  ctx.bezierCurveTo(36, 42, 26, 44, 22, 36);
+  ctx.bezierCurveTo(20, 20, 18, -8, 14, -28);
+  ctx.fill();
+
+  // ── BODY / DRESS ──────────────────────────────────────────────────────────
+  // black jacket upper
+  ctx.fillStyle = '#1e1e2e';
+  ctx.beginPath();
+  ctx.moveTo(-18, 5);
+  ctx.lineTo(-20, 32);
+  ctx.lineTo(20, 32);
+  ctx.lineTo(18, 5);
+  ctx.closePath();
+  ctx.fill();
+
+  // pink dress lower
+  const dressGrad = ctx.createLinearGradient(0, 28, 0, 52);
+  dressGrad.addColorStop(0, '#e91e8c');
+  dressGrad.addColorStop(1, '#f48fb1');
+  ctx.fillStyle = dressGrad;
+  ctx.beginPath();
+  ctx.moveTo(-20, 28);
+  ctx.lineTo(-26, 52);
+  ctx.lineTo(26, 52);
+  ctx.lineTo(20, 28);
+  ctx.closePath();
+  ctx.fill();
+
+  // corset lacing (pink X on black)
+  ctx.strokeStyle = '#ff69b4';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(-6, 8); ctx.lineTo(0, 14);
+  ctx.moveTo(6, 8);  ctx.lineTo(0, 14);
+  ctx.moveTo(-7, 16); ctx.lineTo(0, 21);
+  ctx.moveTo(7, 16);  ctx.lineTo(0, 21);
+  ctx.stroke();
+
+  // ── LEGS / BOOTS ──────────────────────────────────────────────────────────
+  ctx.fillStyle = '#111122';
+  ctx.beginPath(); ctx.roundRect(-14, 50, 10, 18, 4); ctx.fill();
+  ctx.beginPath(); ctx.roundRect(4,   50, 10, 18, 4); ctx.fill();
+
+  // boot highlight (pink lace)
+  ctx.fillStyle = '#ff69b4';
+  ctx.fillRect(-12, 52, 6, 2);
+  ctx.fillRect(6,   52, 6, 2);
+
+  // ── ARMS ──────────────────────────────────────────────────────────────────
+  ctx.fillStyle = '#f4c2c2';  // skin tone
+  // left arm
+  ctx.beginPath(); ctx.ellipse(-22, 18, 5, 13, -0.2, 0, Math.PI * 2); ctx.fill();
+  // right arm
+  ctx.beginPath(); ctx.ellipse(22, 18, 5, 13, 0.2, 0, Math.PI * 2); ctx.fill();
+
+  // sleeve cuffs
+  ctx.fillStyle = '#1e1e2e';
+  ctx.beginPath(); ctx.ellipse(-22, 29, 5, 4, -0.2, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(22, 29, 5, 4, 0.2, 0, Math.PI * 2); ctx.fill();
+
+  // ── SKULL HEAD ────────────────────────────────────────────────────────────
+  // white skull face
+  ctx.fillStyle = '#f0ede8';
+  ctx.beginPath();
+  ctx.ellipse(0, -20, 18, 20, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // subtle cheek blush
+  ctx.fillStyle = 'rgba(255,105,180,0.25)';
+  ctx.beginPath(); ctx.ellipse(-9, -16, 6, 4, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(9,  -16, 6, 4, 0, 0, Math.PI * 2); ctx.fill();
+
+  // eye sockets (dark ovals)
+  ctx.fillStyle = '#1a1a2e';
+  ctx.beginPath(); ctx.ellipse(-6, -24, 5, 6, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(6,  -24, 5, 6, 0, 0, Math.PI * 2); ctx.fill();
+
+  // eye glints
+  ctx.fillStyle = 'rgba(255,105,180,0.9)';
+  ctx.beginPath(); ctx.arc(-5, -25, 2, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(7,  -25, 2, 0, Math.PI * 2); ctx.fill();
+
+  // stitched mouth
+  ctx.strokeStyle = '#555566';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(-7, -10); ctx.lineTo(7, -10);
+  ctx.stroke();
+  // vertical stitches
+  [-5, -2, 1, 4].forEach(sx => {
+    ctx.beginPath();
+    ctx.moveTo(sx, -12); ctx.lineTo(sx, -8);
+    ctx.stroke();
+  });
+
+  // nose dot
+  ctx.fillStyle = '#c0b8b0';
+  ctx.beginPath(); ctx.arc(0, -17, 2, 0, Math.PI * 2); ctx.fill();
+
+  // ── HAIR (front layer) ────────────────────────────────────────────────────
+  ctx.fillStyle = '#1a1a2e';
+  ctx.beginPath();
+  ctx.moveTo(-18, -36);
+  ctx.bezierCurveTo(-20, -28, -16, -14, -18, -4);
+  ctx.bezierCurveTo(-16, -38, 16, -38, 18, -4);
+  ctx.bezierCurveTo(16, -14, 20, -28, 18, -36);
+  ctx.bezierCurveTo(14, -44, -14, -44, -18, -36);
+  ctx.closePath();
+  ctx.fill();
+
+  // side swept fringe
+  ctx.beginPath();
+  ctx.moveTo(-18, -30);
+  ctx.bezierCurveTo(-10, -38, 2, -40, 8, -30);
+  ctx.bezierCurveTo(4, -26, -4, -28, -18, -30);
+  ctx.fill();
+
+  // ── BOWS ─────────────────────────────────────────────────────────────────
+  drawBow(ctx, -18, -36, 1);
+  drawBow(ctx, 18,  -36, -1);
+
+  ctx.restore();
+}
+
+function drawBow(ctx, x, y, dir) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(dir, 1);
+
+  // bow halves
+  const bowGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, 12);
+  bowGrad.addColorStop(0, '#ff9ed2');
+  bowGrad.addColorStop(1, '#e91e8c');
+  ctx.fillStyle = bowGrad;
+
+  // left lobe
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.bezierCurveTo(-14, -10, -16, 2, -6, 6);
+  ctx.closePath();
+  ctx.fill();
+
+  // right lobe
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.bezierCurveTo(14, -10, 16, 2, 6, 6);
+  ctx.closePath();
+  ctx.fill();
+
+  // knot
+  ctx.fillStyle = '#ff69b4';
+  ctx.beginPath(); ctx.ellipse(0, 2, 4, 4, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#ffc0da';
+  ctx.beginPath(); ctx.ellipse(0, 2, 2, 2, 0, 0, Math.PI * 2); ctx.fill();
+
+  ctx.restore();
+}
+
+// ─── DRAWING: STAR ───────────────────────────────────────────────────────────
+function drawStar(s, t) {
+  ctx.save();
+  ctx.translate(s.x, s.y);
+  ctx.rotate(s.rot);
+
+  if (s.isBomb) {
+    // Dark bomb ─────────────────────────────────────────────────────────
+    const pulse = 0.9 + 0.1 * Math.sin(t * 0.01 + s.wobble);
+    ctx.scale(pulse, pulse);
+
+    // glow
+    const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, s.size * 1.4);
+    glow.addColorStop(0, 'rgba(180,0,80,0.5)');
+    glow.addColorStop(1, 'rgba(180,0,80,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath(); ctx.arc(0, 0, s.size * 1.4, 0, Math.PI * 2); ctx.fill();
+
+    // body
+    ctx.fillStyle = '#1a0520';
+    ctx.strokeStyle = '#8b0045';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(0, 0, s.size, 0, Math.PI * 2);
+    ctx.fill(); ctx.stroke();
+
+    // skull on bomb
+    ctx.fillStyle = '#c0a0c0';
+    ctx.font = `${Math.floor(s.size * 1.2)}px serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('💀', 0, 1);
+
+    // fuse
+    ctx.strokeStyle = '#888';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, -s.size);
+    ctx.bezierCurveTo(8, -s.size - 12, 4, -s.size - 20, 10, -s.size - 22);
+    ctx.stroke();
+
+    // fuse spark
+    const spark = 0.5 + 0.5 * Math.sin(t * 0.04 + s.wobble);
+    ctx.fillStyle = `rgba(255,${Math.floor(80 + 140 * spark)},0,${spark})`;
+    ctx.beginPath(); ctx.arc(10, -s.size - 22, 3, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(10, -s.size - 22, 1.5, 0, Math.PI * 2); ctx.fill();
+
+  } else {
+    // Happy Star ────────────────────────────────────────────────────────
+    const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, s.size * 1.8);
+    glow.addColorStop(0, 'rgba(255,220,0,0.5)');
+    glow.addColorStop(1, 'rgba(255,220,0,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath(); ctx.arc(0, 0, s.size * 1.8, 0, Math.PI * 2); ctx.fill();
+
+    // star shape
+    const starGrad = ctx.createRadialGradient(-s.size * 0.2, -s.size * 0.2, 0, 0, 0, s.size);
+    starGrad.addColorStop(0, '#fff7a0');
+    starGrad.addColorStop(0.5, '#ffd700');
+    starGrad.addColorStop(1, '#ff9900');
+    ctx.fillStyle = starGrad;
+
+    starPath(ctx, 0, 0, s.size, s.size * 0.42, 5);
+    ctx.fill();
+
+    // shine
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.beginPath(); ctx.ellipse(-s.size * 0.22, -s.size * 0.22, s.size * 0.16, s.size * 0.1, -0.7, 0, Math.PI * 2);
+    ctx.fill();
+
+    // sparkle points
+    ctx.strokeStyle = 'rgba(255,255,180,0.8)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 4; i++) {
+      const a = (i / 4) * Math.PI * 2 + t * 0.003;
+      const len = s.size * 0.55;
+      const sx = Math.cos(a) * (s.size + len * 0.3);
+      const sy = Math.sin(a) * (s.size + len * 0.3);
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(a) * s.size * 0.9, Math.sin(a) * s.size * 0.9);
+      ctx.lineTo(sx, sy);
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
+// 5-point star path
+function starPath(ctx, cx, cy, outerR, innerR, points) {
+  ctx.beginPath();
+  for (let i = 0; i < points * 2; i++) {
+    const r = i % 2 === 0 ? outerR : innerR;
+    const a = (i / (points * 2)) * Math.PI * 2 - Math.PI / 2;
+    ctx[i === 0 ? 'moveTo' : 'lineTo'](cx + Math.cos(a) * r, cy + Math.sin(a) * r);
+  }
+  ctx.closePath();
+}
+
+// ─── DRAWING: PARTICLES ──────────────────────────────────────────────────────
+function drawParticles() {
+  particles.forEach(p => {
+    ctx.globalAlpha = p.life;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+}
+
+// ─── UTILITY: rounded rect ───────────────────────────────────────────────────
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.arcTo(x + w, y, x + w, y + r, r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+  ctx.lineTo(x + r, y + h);
+  ctx.arcTo(x, y + h, x, y + h - r, r);
+  ctx.lineTo(x, y + r);
+  ctx.arcTo(x, y, x + r, y, r);
+  ctx.closePath();
+}
+
+// ─── SCORE POPUP ─────────────────────────────────────────────────────────────
+const popups = [];
+function addPopup(x, y, text, color) {
+  popups.push({ x, y, text, color, life: 1, vy: -2 });
+}
+
+function drawPopups() {
+  popups.forEach(p => {
+    ctx.globalAlpha = p.life;
+    ctx.fillStyle = p.color;
+    ctx.font = 'bold 22px "Comic Sans MS", cursive';
+    ctx.textAlign = 'center';
+    ctx.fillText(p.text, p.x, p.y);
+  });
+  ctx.globalAlpha = 1;
+}
+
+// ─── MAIN GAME LOOP ───────────────────────────────────────────────────────────
+let animId = null;
+let lastT  = 0;
+
+function gameLoop(t = 0) {
+  animId = requestAnimationFrame(gameLoop);
+  if (!gameRunning) return;
+
+  const dt = Math.min(t - lastT, 32);
+  lastT = t;
+
+  frameCount++;
+
+  // ── LEVEL PROGRESSION ──────────────────────────────────────────────────
+  const newLevel = Math.floor(score / 10) + 1;
+  if (newLevel !== level) level = newLevel;
+  spawnRate = Math.max(30, 80 - level * 6);
+
+  // ── SPAWN STARS ────────────────────────────────────────────────────────
+  if (frameCount % spawnRate === 0) spawnStar();
+
+  // ── PLAYER MOVEMENT ────────────────────────────────────────────────────
+  if (keys['ArrowLeft'] || keys['a'] || keys['A']) {
+    player.x -= player.speed + level * 0.15;
+    player.moving = true;
+  } else if (keys['ArrowRight'] || keys['d'] || keys['D']) {
+    player.x += player.speed + level * 0.15;
+    player.moving = true;
+  } else {
+    player.moving = false;
+  }
+  player.x = Math.max(player.w / 2, Math.min(W - player.w / 2, player.x));
+
+  // ── UPDATE STARS ───────────────────────────────────────────────────────
+  stars.forEach(s => {
+    s.y  += s.speed;
+    s.rot += s.rotSpeed;
+    s.x  += Math.sin(s.wobble + s.y * s.wobbleSpeed) * 0.8;
+
+    // Catch collision (AABB vs circle)
+    const dx = Math.abs(s.x - player.x);
+    const dy = Math.abs(s.y - player.y);
+    const catchW = player.w * 0.55;
+    const catchH = player.h * 0.4;
+
+    if (dx < catchW && dy < catchH + s.size * 0.5) {
+      if (s.isBomb) {
+        lives--;
+        bombSound();
+        spawnParticles(s.x, s.y, '#ff0044', 16);
+        addPopup(s.x, s.y - 20, '💣 -1', '#ff4488');
+        // screen shake
+        shakeFrames = 10;
+      } else {
+        score++;
+        popSound();
+        spawnParticles(s.x, s.y, '#ffd700', 12);
+        addPopup(s.x, s.y - 20, '+1 ⭐', '#ffd700');
+      }
+      s.y = H + 100; // remove
+    }
+
+    // missed star
+    if (!s.isBomb && s.y > H + 20 && s.y < H + 50) {
+      // no penalty for missing a good star
+    }
+  });
+
+  // remove off-screen stars
+  stars = stars.filter(s => s.y < H + 60);
+
+  // ── UPDATE PARTICLES ───────────────────────────────────────────────────
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    p.vy += 0.1;
+    p.life -= p.decay;
+  });
+  particles = particles.filter(p => p.life > 0);
+
+  // ── UPDATE POPUPS ──────────────────────────────────────────────────────
+  popups.forEach(p => { p.y += p.vy; p.life -= 0.025; });
+  popups.splice(0, popups.length, ...popups.filter(p => p.life > 0));
+
+  // ── SCREEN SHAKE ───────────────────────────────────────────────────────
+  let shakeX = 0, shakeY = 0;
+  if (shakeFrames > 0) {
+    shakeX = (Math.random() - 0.5) * 8;
+    shakeY = (Math.random() - 0.5) * 8;
+    shakeFrames--;
+  }
+
+  // ── DRAW ───────────────────────────────────────────────────────────────
+  ctx.save();
+  ctx.translate(shakeX, shakeY);
+
+  drawBackground(t);
+  stars.forEach(s => drawStar(s, t));
+  drawParticles();
+  drawPopups();
+  drawPlayer(player, t);
+  drawHUD();
+
+  ctx.restore();
+
+  // ── GAME OVER CHECK ────────────────────────────────────────────────────
+  if (lives <= 0) {
+    gameRunning = false;
+    stopMusic();
+    gameOverSound();
+    if (score > highScore) highScore = score;
+    setTimeout(showGameOver, 600);
+  }
+}
+
+let shakeFrames = 0;
+
+// ─── SCREEN MANAGEMENT ───────────────────────────────────────────────────────
+function showGameOver() {
+  document.getElementById('stopBtn').style.display = 'none';
+  document.getElementById('finalScore').textContent = score;
+  const msg = document.getElementById('highScoreMsg');
+  msg.textContent = score >= highScore && score > 0
+    ? '🏆 New High Score!'
+    : `Best: ${highScore} ⭐`;
+  document.getElementById('gameOverScreen').style.display = 'flex';
+}
+
+function stopGame() {
+  if (!gameRunning) return;
+  gameRunning = false;
+  stopMusic();
+  gameOverSound();
+  if (score > highScore) highScore = score;
+  setTimeout(showGameOver, 400);
+}
+
+function startGame() {
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  document.getElementById('startScreen').style.display    = 'none';
+  document.getElementById('gameOverScreen').style.display = 'none';
+  document.getElementById('stopBtn').style.display        = 'block';
+  initState();
+  stopMusic();
+  startMusic();
+  if (!animId) gameLoop();
+}
+
+// kick off render loop (shows start screen over still canvas)
+gameLoop();
+</script>
+</body>
+</html>
